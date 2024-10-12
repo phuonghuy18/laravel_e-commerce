@@ -241,4 +241,45 @@ class AuthController extends Controller
             ]);
         }
     }
+
+    public function showChangePasswordForm(){
+        return view('front.account.change-password');
+    }
+
+    public function changePassword(Request $request){
+        $validator = Validator::make($request->all(),[
+            'old_password' => 'required',
+            'new_password' => 'required|min:5',
+            'new_password_confirmation' => 'required|same:new_password'
+
+        ]);
+
+        if($validator->passes()){
+
+            $user = User::select('id','password')->where('id',Auth::user()->id)->first();
+            
+            if (!Hash::check($request->old_password,$user->password)){
+                session()->flash('error','Mật khẩu cũ không đúng, vui lòng thử lại');
+                return response()->json([
+                    'status' => true,
+                    
+                ]);
+            }
+
+            User::where('id',$user->id)->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+            session()->flash('success','Đổi mật khẩu thành công');
+                return response()->json([
+                    'status' => true,
+                    
+                ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
 }

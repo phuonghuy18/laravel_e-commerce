@@ -22,6 +22,7 @@ use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\ShipController;
 use App\Http\Controllers\admin\DiscountCodeController;
 use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\admin\UserController;
 
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Session;
@@ -80,6 +81,9 @@ Route::group(['prefix' => 'account'], function(){
         Route::get('/profile',[AuthController::class,'profile'])->name('account.profile');
         Route::post('/update-profile',[AuthController::class,'updateProfile'])->name('account.updateProfile');
         Route::post('/update-address',[AuthController::class,'updateAddress'])->name('account.updateAddress');
+        Route::get('/change-password',[AuthController::class,'showChangePasswordForm'])->name('account.changePassword');
+        Route::post('/process-change-password',[AuthController::class,'changePassword'])->name('account.processChangePassword');
+
         Route::get('/my-orders',[AuthController::class,'orders'])->name('account.orders');
         Route::get('/my-wishlist',[AuthController::class,'wishlist'])->name('account.wishlist');
         Route::post('/remove-product-from-wishlist',[AuthController::class,'removeProductFromWishlist'])->name('account.removeProductFromWishlist');
@@ -169,7 +173,13 @@ Route::group(['prefix' => 'admin'], function(){
         Route::post('/order/change-status{id}',[OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
         Route::post('/order/send-email{id}',[OrderController::class, 'sendInvoiceEmail'])->name('orders.sendInvoiceEmail');
 
-
+        // user
+        Route::get('/users',[UserController::class, 'index'])->name('users.index');
+        Route::get('/users/create',[UserController::class, 'create'])->name('users.create');
+        Route::post('/users',[UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}/edit',[UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}',[UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}',[UserController::class, 'destroy'])->name('users.delete');
 
 
 

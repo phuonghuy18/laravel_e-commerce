@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('customer_addresses', function(Blueprint $table){
-            $table->foreignId('province_id')->constrained()->after('country_id')->onDelete('cascade');
+        Schema::table('users', function(Blueprint $table){
+            $table->integer('status')->default(1)->after('role');
         });
-        
+    
     }
 
     /**
@@ -22,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('customer_addresses', function(Blueprint $table){
-            $table->dropColumn('province_id');
+        Schema::table('users', function(Blueprint $table){
+            $table->dropColumn('status');
         });
     }
 };
