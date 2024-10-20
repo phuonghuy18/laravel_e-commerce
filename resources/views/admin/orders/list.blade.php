@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
+@if (Auth::user()->role == 2)
 <section class="content-header">					
     <div class="container-fluid my-2">
         <div class="row mb-2">
@@ -47,8 +48,9 @@
                             <th>Customer</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Status</th>
                             <th>Amount</th>
+                            <th>Payment</th>
+                            <th>Status</th>
                             <th>Date Purchase</th>
                         </tr>
                     </thead>
@@ -61,6 +63,14 @@
                                 <td>{{ $order->name }}</td>
                                 <td>{{  $order->email }}</td>
                                 <td>{{  $order->mobile }}</td>
+                                <td>{{ number_format($order->grand_total,3) }}</td>
+                                <td>
+                                    @if ($order->payment_status == 'paid')
+                                        Paid
+                                    @else 
+                                       Not Paid
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($order->status == 'pending')
                                     <span class="badge bg-warning ">Pending</span>
@@ -72,7 +82,7 @@
                                     <span class="badge bg-danger">Cancelled</span>
                                     @endif
                                 </td>
-                                <td>{{ number_format($order->grand_total,3) }}</td>
+                                
                                 <td>
                                     {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}
                                 </td>
@@ -93,6 +103,9 @@
     </div>
     <!-- /.card -->
 </section>
+@else
+{{ abort(403) }} <!-- Trả về lỗi 403 nếu user không phải admin -->
+@endif
 @endsection
 
 @section('customJs')

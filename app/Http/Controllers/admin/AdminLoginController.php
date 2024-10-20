@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminLoginController extends Controller
 {
+
+
     public function index(){
         return view('admin.login');
     }
@@ -28,7 +30,10 @@ class AdminLoginController extends Controller
 
                 if($admin->role == 2){
                     return redirect()->route('admin.dashboard');
-                } else{
+                } elseif ($admin->role == 3){
+                    return redirect()->route('orders.shipperIndex');
+                } else
+                {
                     $admin = Auth::guard('admin')->logout();
                     return redirect()->route('admin.login')->with('error', 'Bạn không có quyền đăng nhập admin');
                 }

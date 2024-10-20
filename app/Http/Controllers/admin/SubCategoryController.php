@@ -18,7 +18,7 @@ class SubCategoryController extends Controller
             $subCategories = $subCategories->where('sub_categories.name' , 'like' , '%'.$request->get('keyword').'%');
             $subCategories = $subCategories->orWhere('categories.name' , 'like' , '%'.$request->get('keyword').'%');
         }
-        $subCategories = $subCategories->paginate(10); // =orderBy('created_at','DESC')
+        $subCategories = $subCategories->paginate(10); 
         return view('admin.sub_category.list', compact('subCategories'));
     }
 

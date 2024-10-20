@@ -60,12 +60,6 @@
 				</a>
 			</div>
 			<div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
-				@if (Auth::check())
-				<a href="{{ route('account.profile') }}" class="nav-link text-dark">My Account</a>
-				@else
-				<a href="{{ route('account.login') }}" class="nav-link text-dark">Đăng nhập</a>
-				@endif
-				
 				<form action="{{ route('front.shop') }}" method="get">					
 					<div class="input-group">
 						<input value="{{ Request::get('search') }}" type="text" placeholder="Search For Products" class="form-control" name="search" id="search">
@@ -74,6 +68,11 @@
 					  	</button>
 					</div>
 				</form>
+				@if (Auth::check())
+				<a href="{{ route('account.profile') }}" class="nav-link text-dark">Tài khoản</a>
+				@else
+				<a href="{{ route('account.login') }}" class="nav-link text-dark">Đăng nhập</a>
+				@endif
 			</div>		
 		</div>
 	</div>
@@ -98,13 +97,16 @@
                     @if (getCategories()->isNotEmpty())
                         @foreach ( getCategories() as $category)
                         <li class="nav-item dropdown">
-                            <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ $category->name }}
-                            </button>
+                            <a class="nav-link dropdown-toggle" href="{{ route('front.shop',[$category->slug,null]) }}" data-bs-toggle="dropdown" aria-expanded="false">
+								{{ $category->name }}
+							</a>
                             @if ($category->sub_category->isNotEmpty())
                             <ul class="dropdown-menu dropdown-menu-dark">
                                 @foreach ($category->sub_category as $subCategory)
-                                    <li><a class="dropdown-item nav-link" href="{{ route('front.shop',[$category->slug,$subCategory->slug]) }}">{{ $subCategory->name }}</a></li>
+                                    <li>
+										<a class="dropdown-item nav-link" href="{{ route('front.shop',[$category->slug,$subCategory->slug]) }}">{{ $subCategory->name }}
+										</a>
+									</li>
                                 @endforeach
                             </ul>
                             @endif
@@ -121,7 +123,11 @@
       		</div>   
 			<div class="right-nav py-0">
 				<a href="{{ route('front.cart') }}" class="ml-3 d-flex pt-2">
-					<i class="fas fa-shopping-cart text-primary"></i>					
+					<i class="fas fa-shopping-cart text-primary fa-lg">
+						<span class="badge" style="position:absolute;top:-8px;right:-15px;border-radius:60%;padding: 3px 8px; border: 1px solid #fff;background-color: #F7CA0D;">
+							{{ Cart::count() }}
+							</span></i>	
+										
 				</a>
 			</div> 		
       	</nav>
@@ -150,11 +156,17 @@
 				<div class="footer-card">
 					<h3>Important Links</h3>
 					<ul>
-						<li><a href="about-us.php" title="About">About</a></li>
+						@if (staticPages()->isNotEmpty())
+							@foreach (staticPages() as $page)
+							<li><a href="{{ route('front.page',$page->slug) }}" title="{{ $page->name }}">{{ $page->name }}</a></li>						
+
+							@endforeach
+						@endif
+						{{-- <li><a href="about-us.php" title="About">About</a></li>
 						<li><a href="contact-us.php" title="Contact Us">Contact Us</a></li>						
 						<li><a href="#" title="Privacy">Privacy</a></li>
 						<li><a href="#" title="Privacy">Terms & Conditions</a></li>
-						<li><a href="#" title="Privacy">Refund Policy</a></li>
+						<li><a href="#" title="Privacy">Refund Policy</a></li> --}}
 					</ul>
 				</div>
 			</div>

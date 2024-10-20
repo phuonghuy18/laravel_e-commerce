@@ -1,0 +1,13 @@
+.container1 {
+    display: flex;
+    justify-content: space-between; /* Đẩy phần tử ra 2 bên */
+}
+
+.block-terms-title1 {
+    flex: 1; /* Để phần tiêu đề chiếm không gian bên trái */
+}
+
+.block-terms-content1 {
+    flex: 1; /* Để phần nội dung chiếm không gian bên phải */
+    text-align: right; /* Căn chỉnh nội dung phía bên phải */
+}

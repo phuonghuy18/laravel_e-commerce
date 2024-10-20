@@ -5,7 +5,7 @@
     <div class="container">
         <div class="light-font">
             <ol class="breadcrumb primary-color mb-0">
-                <li class="breadcrumb-item"><a class="white-text" href="{{ route('account.profile') }}">My Account</a></li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('account.profile') }}">Tài khoản</a></li>
                 <li class="breadcrumb-item">Đơn hàng</li>
             </ol>
         </div>
@@ -28,10 +28,10 @@
                             <table class="table">
                                 <thead> 
                                     <tr>
-                                        <th>Orders #</th>
-                                        <th>Date Purchased</th>
-                                        <th>Status</th>
-                                        <th>Total</th>
+                                        <th style="width: 100px">Mã đơn hàng #</th>
+                                        <th>Ngày mua</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thành tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>

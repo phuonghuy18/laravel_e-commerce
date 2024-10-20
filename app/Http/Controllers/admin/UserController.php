@@ -16,7 +16,7 @@ class UserController extends Controller
         if(!empty($request->get('keyword'))){
             $users = $users->where('name','like','%'.$request->get('keyword').'%');
             $users = $users->orWhere('email','like','%'.$request->get('keyword').'%');
-
+            $users = $users->orWhere('role','like','%'.$request->get('keyword').'%');
         }
         $users = $users->paginate(10);
        
@@ -43,10 +43,13 @@ class UserController extends Controller
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
+            
             $user->password = Hash::make($request->password);
             $user->phone = $request->phone;
             $user->status = $request->status;
-
+            
+            $user->role = $request->role;
+        
             $user->save();
 
             session()->flash('success', 'Thêm thành công người dùng');

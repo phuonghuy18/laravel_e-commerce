@@ -182,12 +182,12 @@
                     </div>
 
                     <div class="form-check">
-                        <input type="radio" name="payment_method" id="payment_method_2" value="cod">
-                        <label for="payment_method_2" class="form-check-label">Stripe</label>
+                        <input type="radio" name="payment_method" id="payment_method_2" value="atm">
+                        <label for="payment_method_2" class="form-check-label">ATM</label>
                     </div>
                     
                     
-                    <div class="card-body p-0 d-none mt-3" id="card-payment-form">
+                    {{-- <div class="card-body p-0 d-none mt-3" id="card-payment-form">
                         <div class="mb-3">
                             <label for="card_number" class="mb-2">Card Number</label>
                             <input type="text" name="card_number" id="card_number" placeholder="Valid Card Number" class="form-control">
@@ -203,7 +203,7 @@
                             </div>
                         </div>
                         
-                    </div>  
+                    </div>   --}}
                     <div class="pt-4">
                         {{-- <a href="#" class="btn-dark btn btn-block w-100">Pay Now</a> --}}
                         <button type="submit" class="btn-dark btn btn-block w-100">Pay Now</button>
@@ -346,7 +346,11 @@
                                 .removeClass('invalid-feedback')
                                 .html('');
                         }
-                        } else {
+                        } else if (response.atm == true){
+        
+                            window.location.href="{{ url('payment_ATM') }}/"+response.orderId;
+                        } 
+                        else {
                             window.location.href="{{ url('thanks/') }}/"+response.orderId;
                         }
 

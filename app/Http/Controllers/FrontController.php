@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Wishlist;
+use App\Models\Page;
 use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
@@ -65,6 +66,18 @@ class FrontController extends Controller
         return response()->json([
             'status' => true,
             'message' => '<div class="alert alert-success"><strong>"'.$product->title.'"</strong> đã được thêm  vào danh sách yêu thích</div>'
+        ]);
+    }
+
+    public function page($slug){
+        $page = Page::where('slug',$slug)->first();
+
+        if ($page == null){
+            abort(404);
+        }
+
+        return view('front.page',[
+            'page' => $page
         ]);
     }
 }

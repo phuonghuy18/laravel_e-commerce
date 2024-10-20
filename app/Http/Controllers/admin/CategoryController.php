@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
 use App\Models\TempImage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+
 use Image;
 
 //use Intervention\Image\ImageManager;

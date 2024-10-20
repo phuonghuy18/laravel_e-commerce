@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
+@if (Auth::user()->role == 2)
     <!-- Content Header (Page header) -->
     <section class="content-header">					
         <div class="container-fluid my-2">
@@ -135,7 +136,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <input type="number" min="0" name="qty" id="qty" class="form-control" placeholder="Qty" value="{{ $product->qty }}">
+                                        <input type="number" readonly min="0" name="qty" id="qty" class="form-control" placeholder="Qty" value="{{ $product->qty }}">
                                         <p class="error"></p>	
                                     </div>
                                 </div>                                         
@@ -239,6 +240,9 @@
         </form>
         <!-- /.card -->
     </section>
+    @else
+{{ abort(403) }} <!-- Trả về lỗi 403 nếu user không phải admin -->
+@endif
     <!-- /.content -->
 @endsection
 

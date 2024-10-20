@@ -357,6 +357,14 @@ class CartController extends Controller
 
             session()->forget('code');
             
+            if ($request->payment_method == 'atm'){
+                return response()->json([
+                    'message' => 'Order saved successfully',
+                    'orderId' =>$order->id,
+                    'status' => true,
+                    'atm' => true
+                ]);;
+            }
             return response()->json([
                 'message' => 'Order saved successfully',
                 'orderId' =>$order->id,
@@ -366,10 +374,188 @@ class CartController extends Controller
 
 
         } else {
+            $promoCode = '';
+            $discountCodeId=NULL;
+            $shipping = 0;
+            $discount = 0;
+            $subTotal = Cart::subtotal(2,'.','');
+            
+            // apply discount
+        if (session()->has('code')){
+            $code = session()->get('code');
+
+            if ($code->type == 'percent'){
+                $discount = ($code->discount_amount/100)*$subTotal;
+            } else {
+                $discount = $code->discount_amount;
+            }
+            $discountCodeId = $code->id;
+            $promoCode = $code->code;
+        }
+
+            // calculate shipping
+            $shippingInfo = ShippingCharge::where('province_id',$request->province)->first();
+
+            $totalQty = 0;
+            foreach (Cart::content() as $item){
+                $totalQty += $item->qty;
+            }
+
+            if ($shippingInfo != null){
+                $shipping = $shippingInfo->amount;
+                $grandTotal = ($subTotal-$discount)+$shipping;
+
+        } else {
+            $shippingInfo = ShippingCharge::where('province_id','other')->first();
+            $shipping = $shippingInfo->amount;
+            $grandTotal = ($subTotal-$discount)+$shipping;
 
         }
 
+        
+            $order = new Order;
+            $order->subtotal = $subTotal;
+            $order->shipping = $shipping;
+            $order->grand_total = $grandTotal;
+            $order->discount = $discount;
+            $order->coupon_code_id = $discountCodeId;
+            $order->coupon_code = $promoCode;
+
+            $order->payment_status = 'paid';
+            $order->status = 'pending';
+            
+            $order->user_id = $user->id;
+
+            $order->first_name = $request->first_name;
+            $order->last_name = $request->last_name;
+            $order->email = $request->email;
+            $order->mobile = $request->mobile;
+            $order->address = $request->address;
+            $order->apartment = $request->apartment;
+            
+            $order->city = $request->city;
+            //$order->zip = $request->zip;
+            $order->notes = $request->order_notes;
+            $order->country_id = $request->country;
+            $order->province_id = $request->province;
+
+            $order->save();
+
+            // store order item in order items table
+            foreach(Cart::content() as $item){
+                $orderItem = new OrderItem;
+                $orderItem->product_id = $item->id;
+                $orderItem->order_id = $order->id;
+                $orderItem->name = $item->name;
+                $orderItem->qty = $item->qty;
+                $orderItem->price = $item->price;
+                $orderItem->total = $item->price*$item->qty;
+                $orderItem->save();
+
+                // update product stock
+                $productData = Product::find($item->id);
+                if ($productData->track_qty == 'Yes'){
+                    $currentQty = $productData->qty;
+                    $updatedQty = $currentQty-$item->qty;
+                    $productData->qty = $updatedQty;
+                    $productData->save();
+                }
+                
+            }
+
+
+
+            // send order email
+            orderEmail($order->id, 'customer');
+
+            session()->flash('success','Bạn đã đặt hàng thành công');
+            Cart::destroy();
+
+            session()->forget('code');
+            
+            if ($request->payment_method == 'atm'){
+                return response()->json([
+                    'message' => 'Order saved successfully',
+                    'orderId' =>$order->id,
+                    'status' => true,
+                    'atm' => true
+                ]);;
+            }
+            return response()->json([
+                'message' => 'Order saved successfully',
+                'orderId' =>$order->id,
+                'status' => true 
+            ]);
+        }
+
     }
+
+
+    public function paymentATM($id){
+        $order = Order::find($id);
+        session()->flash('success','Bạn đã đặt hàng thành công');
+        function execPostRequest($url, $data)
+        {
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($data))
+            );
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            //execute post
+            $result = curl_exec($ch);
+            //close connection
+            curl_close($ch);
+            return $result;
+        }
+
+
+        $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+
+
+        $partnerCode = 'MOMOBKUN20180529';
+        $accessKey = 'klm05TvNBzhg7h7j';
+        $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+        $orderInfo = "Thanh toán qua MoMo";
+        $amount = $order->grand_total*23000;
+        $orderId = $order->id;
+        $redirectUrl = "http://127.0.0.1:8000/thanks/".$orderId;
+        $ipnUrl = "http://127.0.0.1:8000/ticketPaid/".$orderId;
+        $extraData = "";
+        
+
+        $requestId = time() . "";
+        $requestType = "payWithATM";
+        // $extraData = ($_POST["extraData"] ? $_POST["extraData"] : "");
+        //before sign HMAC SHA256 signature
+        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+        $signature = hash_hmac("sha256", $rawHash, $secretKey);
+        $data = array('partnerCode' => $partnerCode,
+            'partnerName' => "Test",
+            "storeId" => "MomoTestStore",
+            'requestId' => $requestId,
+            'amount' => $amount,
+            'orderId' => $orderId,
+            'orderInfo' => $orderInfo,
+            'redirectUrl' => $redirectUrl,
+            'ipnUrl' => $ipnUrl,
+            'lang' => 'vi',
+            'extraData' => $extraData,
+            'requestType' => $requestType,
+            'signature' => $signature);
+        $result = execPostRequest($endpoint, json_encode($data));
+        $jsonResult = json_decode($result, true);  // decode json
+        // dd($jsonResult);
+        //Just a example, please check more in there
+        return redirect($jsonResult['payUrl']);
+    }
+
+
+
 
     public function thankyou($id){
         return view('front.thanks',[

@@ -83,9 +83,9 @@ class ShopController extends Controller
         return view('front.shop',$data);
     }
 
-    public function product($slug){
+    public function product($id){
         //echo $slug;
-        $product = Product::where('slug',$slug)->with('product_images')->first();
+        $product = Product::where('id',$id)->with('product_images')->first();
         if ($product == null){
             abort(404);
         }

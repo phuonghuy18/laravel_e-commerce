@@ -186,6 +186,7 @@ class AuthController extends Controller
     }
 
     public function logout(){
+        \Cart::destroy();
         Auth::logout();
         return redirect()->route('account.login')
                     ->with('success','Đăng xuất thành công');;

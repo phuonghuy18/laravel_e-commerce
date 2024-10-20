@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
+@if (Auth::user()->role == 2)
 <!-- Content Header (Page header) -->
 <section class="content-header">					
     <div class="container-fluid my-2">
@@ -84,6 +85,9 @@
     </div>
     <!-- /.card -->
 </section>
+@else
+{{ abort(403) }} <!-- Trả về lỗi 403 nếu user không phải admin -->
+@endif
 <!-- /.content -->
 @endsection
 

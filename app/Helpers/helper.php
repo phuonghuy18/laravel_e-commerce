@@ -4,6 +4,7 @@ use App\Models\Category;
 use App\Models\ProductImage;
 use App\Models\Order;
 use App\Models\Country;
+use App\Models\Page;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderEmail;
 
@@ -44,4 +45,11 @@ function orderEmail($orderId, $userType="customer"){
 function getCountryInfo($id){
     return Country::where('id',$id)->first();
 }
+
+function staticPages(){
+    $page = Page::orderBy('name','ASC')->get();
+    return $page;
+}
+
+
 ?>

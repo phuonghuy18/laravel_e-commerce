@@ -5,8 +5,9 @@
     <div class="container">
         <div class="light-font">
             <ol class="breadcrumb primary-color mb-0">
-                <li class="breadcrumb-item"><a class="white-text" href="#">My Account</a></li>
-                <li class="breadcrumb-item">Settings</li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('account.profile') }}">Tài khoảns</a></li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('account.orders') }}">Đơn hàng</a></li>
+                <li class="breadcrumb-item"><span class="white-text" href="#">Chi tiết đơn hàng</span></li>
             </ol>
         </div>
     </div>
@@ -111,10 +112,13 @@
                                     <div class="col">
                                         <!-- Title -->
                                         <p class="mb-4 fs-sm fw-bold">
-                                            <a class="text-body" href="product.html">{{ $item->name }} x {{ $item->qty }}</a> <br>
+                                            <a class="text-body" href="product.html">{{ $item->name }} x {{ $item->qty }}</a> 
+                                            <a href="{{ route('front.product',$item->product_id) }}" style="padding: 2px 10px" class="btn btn-warning btn-sm active" role="button" aria-pressed="true">Mua lại</a>
+                                            <br>
                                             <span class="text-muted">${{ $item->total }}</span>
                                         </p>
                                     </div>
+                                   
                                 </div>
                             </li>
                             @endforeach

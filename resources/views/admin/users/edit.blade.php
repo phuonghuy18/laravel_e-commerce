@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
+@if (Auth::user()->role == 2)
 <!-- Content Header (Page header) -->
 <section class="content-header">					
     <div class="container-fluid my-2">
@@ -61,7 +62,17 @@
                             </select>
                             <p></p>
                         </div>
-                    </div>								
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="slug">Role</label>
+                            <select name="role" id="role" class="form-control">
+                                <option {{ ($user->role == 1) ? 'selected' : '' }} value="1">User</option>
+                                <option {{ ($user->role == 3) ? 'selected' : '' }} value="0">Shipper</option>
+                            </select>
+                            <p></p>
+                        </div>
+                    </div>							
                 </div>
             </div>							
         </div>
@@ -73,6 +84,9 @@
     </div>
     <!-- /.card -->
 </section>
+@else
+{{ abort(403) }} <!-- Trả về lỗi 403 nếu user không phải admin -->
+@endif
 <!-- /.content -->
 @endsection
 

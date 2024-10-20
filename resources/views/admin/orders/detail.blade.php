@@ -114,7 +114,7 @@
                             <select name="status" id="status" class="form-control">
                                 <option value="pending" {{ ($order->status == 'pending') ? 'selected' : '' }}>Pending</option>
                                 <option value="shipping" {{ ($order->status == 'shipping') ? 'selected' : '' }}>Shipping</option>
-                                <option value="delivered" {{ ($order->status == 'delivered') ? 'selected' : '' }}>Delivered</option>
+                                {{-- <option value="delivered" {{ ($order->status == 'delivered') ? 'selected' : '' }}>Delivered</option> --}}
                                 <option value="cancelled" {{ ($order->status == 'cancelled') ? 'selected' : '' }}>Cancelled</option>
                             </select>
                         </div>

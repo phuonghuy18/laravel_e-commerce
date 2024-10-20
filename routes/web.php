@@ -3,6 +3,7 @@
 namespace Illuminate\Auth\Middleware;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 
 use App\Http\Controllers\admin\AdminLoginController;
@@ -23,6 +24,11 @@ use App\Http\Controllers\admin\ShipController;
 use App\Http\Controllers\admin\DiscountCodeController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\ProductStockController;
+use App\Http\Controllers\admin\SettingController;
+use App\Http\Controllers\admin\PageController;
+use App\Http\Controllers\admin\ShipperController;
+
 
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Session;
@@ -48,7 +54,7 @@ use Illuminate\Http\Request;
 
 Route::get('/',[FrontController::class, 'index'])->name('front.home');
 Route::get('/shop/{categprySlug?}/{subCategorySlug?}',[ShopController::class, 'index'])->name('front.shop');
-Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
+Route::get('/product/{id}',[ShopController::class,'product'])->name('front.product');
 Route::get('/cart',[CartController::class, 'cart'])->name('front.cart');
 Route::post('/add-to-cart',[CartController::class, 'addToCart'])->name('front.addToCart');
 Route::post('/update-cart',[CartController::class, 'updateCart'])->name('front.updateCart');
@@ -56,10 +62,12 @@ Route::post('/delete-item',[CartController::class, 'deleteItem'])->name('front.d
 Route::get('/checkout',[CartController::class, 'checkout'])->name('front.checkout');
 Route::post('/process-checkout',[CartController::class, 'processCheckout'])->name('front.processCheckout');
 Route::get('/thanks/{orderId}',[CartController::class, 'thankyou'])->name('front.thankyou');
+Route::get('/payment_ATM/{id}',[CartController::class, 'paymentATM'])->name('orders.paymentATM');
 Route::post('/get-order-summery',[CartController::class, 'getOrderSummery'])->name('front.getOrderSummery');
 Route::post('/apply-discount',[CartController::class, 'applyDiscount'])->name('front.applyDiscount');
 Route::post('/remove-discount',[CartController::class, 'removeCoupon'])->name('front.removeCoupon');
 Route::post('/add-to-wishlist',[FrontController::class, 'addToWishList'])->name('front.addToWishList');
+Route::get('/page/{slug}',[FrontController::class, 'page'])->name('front.page');
 
 //applyDiscount
 
@@ -95,6 +103,9 @@ Route::group(['prefix' => 'account'], function(){
 
 });
 
+
+
+
 Route::group(['prefix' => 'admin'], function(){
 
     Route::group(['middleware' => 'admin.guest'], function(){
@@ -102,9 +113,19 @@ Route::group(['prefix' => 'admin'], function(){
         Route::post('/authenticate',[AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
     });
 
+    
     Route::group(['middleware' => 'admin.auth'], function(){
-        Route::get('/dashboard',[HomeController::class, 'index'])->name('admin.dashboard');
-        Route::get('/logout',[HomeController::class, 'logout'])->name('admin.logout');
+        
+            Route::get('/dashboard',[HomeController::class, 'index'])->name('admin.dashboard');
+            Route::get('/logout',[HomeController::class, 'logout'])->name('admin.logout');
+        
+
+            Route::group(['middleware' => 'shipper.auth'], function() {
+                Route::get('/ordersShipper', [ShipperController::class, 'shipperIndex'])->name('orders.shipperIndex');
+                Route::get('/ordersShipper/{id}', [ShipperController::class, 'shipperDetail'])->name('orders.shipperDetail');
+                Route::post('/ordersShipper/change-status{id}', [OrderController::class, 'shipperChangeOrderStatus'])->name('orders.shipperChangeOrderStatus');
+            });
+        
 
         //category
         Route::get('/categories',[CategoryController::class, 'index'])->name('categories.index');
@@ -140,6 +161,10 @@ Route::group(['prefix' => 'admin'], function(){
         Route::delete('/products/{product}',[ProductController::class, 'destroy'])->name('products.delete');
         Route::get('/get-products',[ProductController::class, 'getProducts'])->name('products.getProducts');
 
+        // stock of product
+        Route::get('/products/{product}/import',[ProductStockController::class, 'import'])->name('products.import');
+        Route::put('/products/{product}/stock',[ProductStockController::class, 'updateStock'])->name('products.updateStock');
+        Route::get('/import-products',[ProductStockController::class, 'index'])->name('import-product.index');
 
         Route::get('/product-subcategories',[ProductSubCategoryController::class, 'index'])->name('product-subcategories.index');
 
@@ -173,6 +198,8 @@ Route::group(['prefix' => 'admin'], function(){
         Route::post('/order/change-status{id}',[OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
         Route::post('/order/send-email{id}',[OrderController::class, 'sendInvoiceEmail'])->name('orders.sendInvoiceEmail');
 
+    
+        
         // user
         Route::get('/users',[UserController::class, 'index'])->name('users.index');
         Route::get('/users/create',[UserController::class, 'create'])->name('users.create');
@@ -181,6 +208,17 @@ Route::group(['prefix' => 'admin'], function(){
         Route::put('/users/{user}',[UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}',[UserController::class, 'destroy'])->name('users.delete');
 
+        // page
+        Route::get('/pages',[PageController::class, 'index'])->name('pages.index');
+        Route::get('/pages/create',[PageController::class, 'create'])->name('pages.create');
+        Route::post('/pages',[PageController::class, 'store'])->name('pages.store');
+        Route::get('/pages/{page}/edit',[PageController::class, 'edit'])->name('pages.edit');
+        Route::put('/pages/{page}',[PageController::class, 'update'])->name('pages.update');
+        Route::delete('/pages/{page}',[PageController::class, 'destroy'])->name('pages.delete');
+
+        // setting
+        Route::get('/change-password',[SettingController::class, 'showChangePasswordForm'])->name('admin.showChangePasswordForm');
+        Route::post('/process-change-password',[SettingController::class, 'processChangePassword'])->name('admin.processChangePassword');
 
 
 
