@@ -11,6 +11,8 @@
 
 <script src="{{ asset('admin-assets/js/datetimepicker.js') }}"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('admin-assets/js/demo.js') }}"></script>
 <script type="text/javascript">

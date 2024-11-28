@@ -1,12 +1,12 @@
-@extends('front.layouts.app')
+@extends('front.layouts.appwithoutsearch')
 
 @section('content')
 <section class="section-5 pt-3 pb-3 mb-3 bg-white">
     <div class="container">
         <div class="light-font">
             <ol class="breadcrumb primary-color mb-0">
-                <li class="breadcrumb-item"><a class="white-text" href="{{ route('account.profile') }}">Tài khoản</a></li>
-                <li class="breadcrumb-item">Tùy chỉnh</li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('account.profile') }}">TÀI KHOẢN</a></li>
+                <li class="breadcrumb-item">TÙY CHỈNH</li>
             </ol>
         </div>
     </div>
@@ -70,17 +70,13 @@
                                 <input value="{{ (!empty($address)) ? $address->last_name : '' }}" type="text" name="last_name" id="last_name" placeholder="Nhập tên" class="form-control">
                                 <p></p>
                             </div>
-                            <div class="col-md-6 mb-3">            
-                                <label for="email">Email</label>
-                                <input value="{{ (!empty($address)) ? $address->email : '' }}" type="text" name="email" id="email" placeholder="Nhập Email" class="form-control">
-                                <p></p>
-                            </div>
+                            
                             <div class="col-md-6 mb-3">                                    
                                 <label for="phone">Số điện thoại</label>
                                 <input value="{{ (!empty($address)) ? $address->mobile : '' }}" type="text" name="mobile" id="mobile" placeholder="Nhập số điện thoại" class="form-control">
                                 <p></p>
                             </div>
-                            <div class="mb-3">                                    
+                            {{-- <div class="mb-3">                                    
                                 <label for="province">Quốc gia</label>
                                 <select class="form-control" name="country_id" id="country_id">
                                     <option value="">Chọn quốc gia</option>
@@ -92,8 +88,8 @@
                                     @endif
                                 </select>
                                 <p></p>
-                            </div>
-                            <div class="mb-3">                                    
+                            </div> --}}
+                            <div class="col-md-6 mb-3">                                    
                                 <label for="province">Tỉnh/Thành phố</label>
                                 <select class="form-control" name="province_id" id="province_id">
                                     <option value="">Chọn tỉnh/thành phố</option>
@@ -113,7 +109,7 @@
                             </div>
 
                             <div class="d-flex">
-                                <button class="btn btn-dark">Update</button>
+                                <button class="btn btn-dark">Cập nhật</button>
                             </div>
                         </div>
                     </div>

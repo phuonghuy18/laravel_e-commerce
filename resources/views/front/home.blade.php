@@ -9,16 +9,16 @@
                 <!-- <img src="images/carousel-1.jpg" class="d-block w-100" alt=""> -->
 
                 <picture>
-                    <source media="(max-width: 799px)" srcset="{{ asset('front-assets/images/carousel-1-m.jpg') }}" />
-                    <source media="(min-width: 800px)" srcset="{{ asset('front-assets/images/carousel-1.jpg') }}" />
-                    <img src="{{ asset('front-assets/images/carousel-1.jpg') }}" alt="" />
+                    <source media="(max-width: 799px)" srcset="{{ asset('front-assets/images/banner1-m.png') }}" />
+                    <source media="(min-width: 800px)" srcset="{{ asset('front-assets/images/banner1.png') }}" />
+                    <img src="{{ asset('front-assets/images/banner1.png') }}" alt="" />
                 </picture>
 
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3">
-                        <h1 class="display-4 text-white mb-3">Kids Fashion</h1>
-                        <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
-                        <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                        <h1 class="display-4 text-white mb-3">NƯỚC HOA NAM</h1>
+                        <p class="mx-md-5 px-5">Khám phá thế giới mạnh mẽ và quyến rũ, để trải nghiệm bộ sưu tập nước hoa nam đẳng cấp, mang đến sự tự tin và cuốn hút từ những thương hiệu nổi tiếng.</p>
+                        <a class="btn btn-outline-light py-2 px-4 mt-3" href="{{ route('front.shop', ['categorySlug' => 'nuoc-hoa-nam']) }}">Shop Now</a>
                     </div>
                 </div>
             </div>
@@ -32,9 +32,11 @@
 
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3">
-                        <h1 class="display-4 text-white mb-3">Womens Fashion</h1>
-                        <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
-                        <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                        <h1 class="display-4 text-white mb-3">NƯỚC HOA NỮ</h1>
+                            <p class="mx-md-5 px-5">Hãy khám phá thế giới hương thơm tinh tế, nồng nàn và cùng hoà mình vào bộ sưu tập
+                            những lọ nước hoa được yêu thích nhất của lâu đài sắc đẹp Lancôme.
+                            </p>
+                        <a class="btn btn-outline-light py-2 px-4 mt-3" href="{{ route('front.shop', ['categorySlug' => 'nuoc-hoa-nu']) }}">Shop Now</a>
                     </div>
                 </div>
             </div>
@@ -47,9 +49,9 @@
 
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3">
-                        <h1 class="display-4 text-white mb-3">Shop Online at Flat 70% off on Branded Clothes</h1>
-                        <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
-                        <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                        <h1 class="display-6 text-white mb-3">Mua sắm trực tuyến với giá cả hợp lý</h1>
+                        <p class="mx-md-5 px-5">Khám phá các ưu đãi đặc biệt và chương trình giảm giá khi mua sắm trực tuyến, mang lại cho bạn trải nghiệm mua sắm tiết kiệm và tiện lợi.</p>
+                        <a class="btn btn-outline-light py-2 px-4 mt-3" href="{{ route('front.shop') }}">Shop Now</a>
                     </div>
                 </div>
             </div>
@@ -67,25 +69,25 @@
 <section class="section-2">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="box shadow-lg">
                     <div class="fa icon fa-check text-primary m-0 mr-3"></div>
                     <h2 class="font-weight-semi-bold m-0">Quality Product</h5>
                 </div>                    
             </div>
-            {{-- <div class="col-lg-3 ">
+            <div class="col-lg-3 ">
                 <div class="box shadow-lg">
                     <div class="fa icon fa-shipping-fast text-primary m-0 mr-3"></div>
-                    <h2 class="font-weight-semi-bold m-0">Free Shipping</h2>
+                    <h2 class="font-weight-semi-bold m-0">Genuine import</h2>
                 </div>                    
-            </div> --}}
-            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-3">
                 <div class="box shadow-lg">
                     <div class="fa icon fa-exchange-alt text-primary m-0 mr-3"></div>
                     <h2 class="font-weight-semi-bold m-0">14-Day Return</h2>
                 </div>                    
             </div>
-            <div class="col-lg-4 ">
+            <div class="col-lg-3">
                 <div class="box shadow-lg">
                     <div class="fa icon fa-phone-volume text-primary m-0 mr-3"></div>
                     <h2 class="font-weight-semi-bold m-0">24/7 Support</h5>
@@ -170,9 +172,9 @@
                         <div class="card-body text-center mt-3">
                             <a class="h6 link" href="product.php">{{ $product->title }}</a>
                             <div class="price mt-2">
-                                <span class="h5"><strong>${{ $product->price }}</strong></span>
+                                <span class="h5"><strong>{{ number_format($product->price) }}</strong></span>
                                 @if ($product->compare_price > 0)
-                                <span class="h6 text-underline"><del>${{ $product->compare_price }}</del></span>
+                                <span class="h6 text-underline"><del>{{ number_format($product->compare_price) }}</del></span>
                                 @endif
                                 
                             </div>
@@ -232,9 +234,9 @@
                     <div class="card-body text-center mt-3">
                         <a class="h6 link" href="product.php">{{ $product->title }}</a>
                         <div class="price mt-2">
-                            <span class="h5"><strong>${{ $product->price }}</strong></span>
+                            <span class="h5"><strong>{{ number_format($product->price) }}</strong></span>
                             @if ($product->compare_price > 0)
-                            <span class="h6 text-underline"><del>${{ $product->compare_price }}</del></span>
+                            <span class="h6 text-underline"><del>{{ number_format($product->compare_price) }}</del></span>
                             @endif
                             
                         </div>

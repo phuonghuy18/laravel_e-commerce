@@ -52,12 +52,7 @@
                                         <textarea name="description" id="description" cols="30" rows="10" class="summernote" placeholder="Description"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label for="description">Shipping and Returns</label>
-                                        <textarea name="shipping_returns" id="shipping_returns" cols="30" rows="10" class="summernote" placeholder=""></textarea>
-                                    </div>
-                                </div>                                               
+                                                                               
                             </div>
                         </div>	                                                                      
                     </div>
@@ -101,19 +96,6 @@
                         <div class="card-body">
                             <h2 class="h4 mb-3">Inventory</h2>								
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="sku">SKU (Stock Keeping Unit)</label>
-                                        <input type="text" name="sku" id="sku" class="form-control" placeholder="sku">
-                                        <p class="error"></p>	
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="barcode">Barcode</label>
-                                        <input type="text" name="barcode" id="barcode" class="form-control" placeholder="Barcode">	
-                                    </div>
-                                </div>   
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <div class="custom-control custom-checkbox">

@@ -32,7 +32,10 @@ class AdminLoginController extends Controller
                     return redirect()->route('admin.dashboard');
                 } elseif ($admin->role == 3){
                     return redirect()->route('orders.shipperIndex');
-                } else
+                } elseif ($admin->role == 4){
+                    return redirect()->route('products.productRatings');
+                }
+                 else
                 {
                     $admin = Auth::guard('admin')->logout();
                     return redirect()->route('admin.login')->with('error', 'Bạn không có quyền đăng nhập admin');

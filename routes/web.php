@@ -28,6 +28,8 @@ use App\Http\Controllers\admin\ProductStockController;
 use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\PageController;
 use App\Http\Controllers\admin\ShipperController;
+use App\Http\Controllers\admin\OrderItemController;
+use App\Http\Controllers\admin\ProductReceiptController;
 
 
 use Illuminate\Http\Request;
@@ -68,6 +70,16 @@ Route::post('/apply-discount',[CartController::class, 'applyDiscount'])->name('f
 Route::post('/remove-discount',[CartController::class, 'removeCoupon'])->name('front.removeCoupon');
 Route::post('/add-to-wishlist',[FrontController::class, 'addToWishList'])->name('front.addToWishList');
 Route::get('/page/{slug}',[FrontController::class, 'page'])->name('front.page');
+Route::post('/send-contact-email',[FrontController::class, 'sendContactEmail'])->name('front.sendContactEmail');
+Route::post('/cancel-order/{orderId}', [FrontController::class, 'cancelOrder']);
+
+Route::get('/forgot-password',[AuthController::class, 'forgotPassword'])->name('front.forgotPassword');
+Route::post('/process-forgot-password',[AuthController::class, 'processForgotPassword'])->name('front.processForgotPassword');
+Route::get('/reset-password/{token}',[AuthController::class, 'resetPassword'])->name('front.resetPassword');
+Route::post('/process-reset-password',[AuthController::class, 'processResetPassword'])->name('front.processResetPassword');
+
+Route::post('/save-rating/{productId}',[ShopController::class,'saveRating'])->name('front.saveRating');
+
 
 //applyDiscount
 
@@ -125,6 +137,11 @@ Route::group(['prefix' => 'admin'], function(){
                 Route::get('/ordersShipper/{id}', [ShipperController::class, 'shipperDetail'])->name('orders.shipperDetail');
                 Route::post('/ordersShipper/change-status{id}', [OrderController::class, 'shipperChangeOrderStatus'])->name('orders.shipperChangeOrderStatus');
             });
+
+            Route::group(['middleware' => 'staff.auth'], function() {
+                Route::get('/ratings',[ProductController::class, 'productRatings'])->name('products.productRatings');
+                Route::get('/change-rating-status',[ProductController::class, 'changRatingStatus'])->name('products.changRatingStatus');
+            });
         
 
         //category
@@ -152,14 +169,28 @@ Route::group(['prefix' => 'admin'], function(){
         Route::put('/brands/{brand}',[BrandController::class, 'update'])->name('brands.update');
         Route::delete('/brands/{brand}',[BrandController::class, 'destroy'])->name('brands.delete');
 
+
+        Route::get('/order-items/statistics', [OrderItemController::class, 'index'])->name('productStatistics.index');
+        Route::get('/order-items/product-sold-chart', [OrderItemController::class, 'productSoldChart'])->name('productStatistics.productSoldChart');
+
         // Products
         Route::get('/products',[ProductController::class, 'index'])->name('products.index');
+        
         Route::get('/products/create',[ProductController::class, 'create'])->name('products.create');
         Route::post('/products',[ProductController::class, 'store'])->name('products.store');
         Route::get('/products/{product}/edit',[ProductController::class, 'edit'])->name('products.edit');
         Route::put('/products/{product}',[ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}',[ProductController::class, 'destroy'])->name('products.delete');
         Route::get('/get-products',[ProductController::class, 'getProducts'])->name('products.getProducts');
+        Route::get('/ratings',[ProductController::class, 'productRatings'])->name('products.productRatings');
+        Route::get('/change-rating-status',[ProductController::class, 'changRatingStatus'])->name('products.changRatingStatus');
+
+        // product receipt
+        Route::get('/products-receipt',[ProductReceiptController::class, 'index'])->name('products-receipt.index');
+        Route::get('/products-receipt/create',[ProductReceiptController::class, 'create'])->name('products-receipt.create');
+        Route::post('/products-receipt',[ProductReceiptController::class, 'store'])->name('products-receipt.store');
+        Route::get('/products-receipt/{id}',[ProductReceiptController::class, 'detail'])->name('products-receipt.detail');
+        Route::post('products-receipt/change-status{id}',[ProductReceiptController::class, 'changeProductReceiptStatus'])->name('products-receipt.changeProductReceiptStatus');
 
         // stock of product
         Route::get('/products/{product}/import',[ProductStockController::class, 'import'])->name('products.import');
@@ -220,6 +251,10 @@ Route::group(['prefix' => 'admin'], function(){
         Route::get('/change-password',[SettingController::class, 'showChangePasswordForm'])->name('admin.showChangePasswordForm');
         Route::post('/process-change-password',[SettingController::class, 'processChangePassword'])->name('admin.processChangePassword');
 
+        // thống kê doanh thu theo tháng
+        Route::get('/revenue-chart',[HomeController::class, 'getMonthlyRevenue'])->name('admin.getMonthlyRevenue');
+        Route::get('/receipt-chart',[HomeController::class, 'getMonthlyReceipt'])->name('admin.getMonthlyReceipt');
+        Route::get('/revenue', [HomeController::class, 'getMonthlyRevenueDashboard'])->name('getMonthlyRevenueDashboard');
 
 
        // temp-images.create

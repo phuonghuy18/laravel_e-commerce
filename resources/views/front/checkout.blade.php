@@ -5,9 +5,9 @@
     <div class="container">
         <div class="light-font">
             <ol class="breadcrumb primary-color mb-0">
-                <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
-                <li class="breadcrumb-item"><a class="white-text" href="#">Shop</a></li>
-                <li class="breadcrumb-item">Checkout</li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home') }}">TRANG CHỦ</a></li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.cart') }}">GIỎ HÀNG</a></li>
+                <li class="breadcrumb-item">THANH TOÁN</li>
             </ol>
         </div>
     </div>
@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="sub-title">
-                    <h2>Shipping Address</h2>
+                    <h2>Thông tin giao hàng</h2>
                 </div>
                 <div class="card shadow-lg border-0">
                     <div class="card-body checkout-form">
@@ -27,13 +27,13 @@
                             
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name" value="{{ (!empty($customerAddress)) ? $customerAddress->first_name : '' }}">
+                                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Họ" value="{{ (!empty($customerAddress)) ? $customerAddress->first_name : '' }}">
                                     <p></p>
                                 </div>            
                             </div>
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name" value="{{ (!empty($customerAddress)) ? $customerAddress->last_name : '' }}">
+                                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Tên" value="{{ (!empty($customerAddress)) ? $customerAddress->last_name : '' }}">
                                     <p></p>
                                 </div>            
                             </div>
@@ -45,7 +45,7 @@
                                 </div>            
                             </div>
 
-                            <div class="col-md-12">
+                            {{-- <div class="col-md-12">
                                 <div class="mb-3">
                                     <select name="country" id="country" class="form-control">
                                         <option value="">Select a Country</option>
@@ -57,12 +57,12 @@
                                     </select>
                                     <p></p>
                                 </div>            
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <select name="province" id="province" class="form-control">
-                                        <option value="">Select a Province</option>
+                                        <option value="">Tỉnh, thành phố</option>
                                         @if ($provinces->isNotEmpty())
                                             @foreach ($provinces as $province)
                                                 <option {{ (!empty($customerAddress) && $customerAddress->province_id == $province->id) ? 'selected' : ''  }} value="{{ $province->id }}">{{ $province->name }}</option>
@@ -75,24 +75,23 @@
 
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <textarea name="address" id="address" cols="30" rows="3" placeholder="Address" class="form-control">{{ (!empty($customerAddress)) ? $customerAddress->address : '' }}</textarea>
-
+                                    <textarea name="address" id="address" cols="30" rows="3" placeholder="Địa chỉ" class="form-control">{{ (!empty($customerAddress)) ? $customerAddress->address : '' }}</textarea>
                                     <p></p>
                                 </div>            
                             </div>
 
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <input type="text" name="apartment" id="apartment" class="form-control" placeholder="Apartment, suite, unit, etc. (optional)" value="{{ (!empty($customerAddress)) ? $customerAddress->apartment : '' }}">
+                                    <input type="text" name="apartment" id="apartment" class="form-control" placeholder="Địa chỉ khác" value="{{ (!empty($customerAddress)) ? $customerAddress->apartment : '' }}">
                                 </div>            
                             </div>
 
-                            <div class="col-md-4">
+                            {{-- <div class="col-md-4">
                                 <div class="mb-3">
                                     <input type="text" name="city" id="city" class="form-control" placeholder="City" value="{{ (!empty($customerAddress)) ? $customerAddress->city : '' }}">
                                     <p></p>
                                 </div>            
-                            </div>
+                            </div> --}}
 
                             {{-- <div class="col-md-4">
                                 <div class="mb-3">
@@ -110,7 +109,7 @@
 
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Mobile No." value="{{ (!empty($customerAddress)) ? $customerAddress->mobile : '' }}">
+                                    <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Số điện thoại" value="{{ (!empty($customerAddress)) ? $customerAddress->mobile : '' }}">
                                     <p></p>
                                 </div>            
                             </div>
@@ -118,7 +117,7 @@
 
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <textarea name="order_notes" id="order_notes" cols="30" rows="2" placeholder="Order Notes (optional)" class="form-control"></textarea>
+                                    <textarea name="order_notes" id="order_notes" cols="30" rows="2" placeholder="Ghi chú (nếu có)" class="form-control"></textarea>
                                 </div>            
                             </div>
 
@@ -128,34 +127,34 @@
             </div>
             <div class="col-md-4">
                 <div class="sub-title">
-                    <h2>Order Summery</h3>
+                    <h2>Tóm tắt đơn hàng</h3>
                 </div>                    
                 <div class="card cart-summery">
                     <div class="card-body">
                         @foreach (Cart::content() as $item)
                         <div class="d-flex justify-content-between pb-2">
                             <div class="h6">{{ $item->name }} X {{ $item->qty }}</div>
-                            <div class="h6">${{ $item->price*$item->qty }}</div>
+                            <div class="h6">{{ $item->price*$item->qty }}đ</div>
                         </div>
                         @endforeach
                         
                         
                         <div class="d-flex justify-content-between summery-end">
-                            <div class="h6"><strong>Subtotal</strong></div>
-                            <div class="h6"><strong>${{ Cart::subtotal() }}</strong></div>
+                            <div class="h6"><strong>Thành tiền</strong></div>
+                            <div class="h6"><strong>{{ Cart::subtotal() }}</strong></div>
                         </div>
 
                         <div class="d-flex justify-content-between summery-end">
-                            <div class="h6"><strong>Discount</strong></div>
-                            <div class="h6"><strong id="discount_value">${{ $discount }}</strong></div>
+                            <div class="h6"><strong>Giá giảm</strong></div>
+                            <div class="h6"><strong id="discount_value">{{ $discount }}</strong></div>
                         </div>
                         <div class="d-flex justify-content-between mt-2">
-                            <div class="h6"><strong>Shipping</strong></div>
-                            <div class="h6"><strong id="shippingAmount">${{ number_format($totalShippingCharge,2) }}</strong></div>
+                            <div class="h6"><strong>Phí vận chuyển</strong></div>
+                            <div class="h6"><strong id="shippingAmount">{{ number_format($totalShippingCharge) }}</strong></div>
                         </div>
                         <div class="input-group apply-coupan mt-4">
-                            <input type="text" placeholder="Coupon Code" class="form-control" name="discount_code" id="discount_code">
-                            <button class="btn btn-dark" type="button" id="apply-discount">Apply Coupon</button>
+                            <input type="text" placeholder="Nhập mã giảm" class="form-control" name="discount_code" id="discount_code">
+                            <button class="btn btn-dark" type="button" id="apply-discount">Thêm mã giảm giá</button>
                         </div>
                         <div id="discount-response-wrapper">
                             @if (Session::has('code'))
@@ -167,8 +166,8 @@
                         </div>
                         
                         <div class="d-flex justify-content-between mt-2 summery-end">
-                            <div class="h5"><strong>Total</strong></div>
-                            <div class="h5"><strong id="grandTotal">${{ number_format($grandTotal,2) }}</strong></div>
+                            <div class="h5"><strong>Tổng</strong></div>
+                            <div class="h5"><strong id="grandTotal">{{ number_format($grandTotal) }}đ</strong></div>
                         </div>                            
                     </div>
                     
@@ -183,7 +182,7 @@
 
                     <div class="form-check">
                         <input type="radio" name="payment_method" id="payment_method_2" value="atm">
-                        <label for="payment_method_2" class="form-check-label">ATM</label>
+                        <label for="payment_method_2" class="form-check-label">Momo</label>
                     </div>
                     
                     
@@ -206,7 +205,7 @@
                     </div>   --}}
                     <div class="pt-4">
                         {{-- <a href="#" class="btn-dark btn btn-block w-100">Pay Now</a> --}}
-                        <button type="submit" class="btn-dark btn btn-block w-100">Pay Now</button>
+                        <button type="submit" class="btn-dark btn btn-block w-100">Thanh toán ngay</button>
                     </div>                      
                 </div>
 

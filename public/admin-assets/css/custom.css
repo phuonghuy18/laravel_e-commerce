@@ -25,3 +25,112 @@
 .select2-container--default .select2-selection--multiple .select2-selection__rendered li{
   color:#000;
 }
+
+.small-box {
+  border-radius: 10px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffffff, #f1f1f1);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  color: #333;
+}
+
+.small-box .inner h3 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.small-box .inner p {
+  font-size: 16px;
+  color: #777;
+}
+
+.small-box .icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 40px;
+  opacity: 0.2;
+  color: #666;
+}
+
+.small-box-footer {
+  font-size: 14px;
+  color: #555;
+  background: #e0e0e0;
+  padding: 10px;
+  text-align: center;
+  display: block;
+  border-radius: 0 0 10px 10px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.small-box-footer:hover {
+  background: #d0d0d0;
+  text-decoration: none;
+  color: #333;
+}
+
+.small-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.bg-primary {
+  background: linear-gradient(135deg, #4e73df, #224abe);
+  color: #fff;
+}
+
+.bg-success {
+  background: linear-gradient(135deg, #1cc88a, #17a673);
+  color: #fff;
+}
+
+.bg-warning {
+  background: linear-gradient(135deg, #f6c23e, #dda20a);
+  color: #fff;
+}
+
+.bg-danger {
+  background: linear-gradient(135deg, #e74a3b, #c9302c);
+  color: #fff;
+}
+
+.bg-info {
+  background: linear-gradient(135deg, #36b9cc, #2c9faf);
+  color: #fff;
+}
+
+.small-box .inner h3,
+.small-box .inner p,
+.small-box-footer {
+  color: inherit; /* đảm bảo màu chữ phù hợp với màu nền */
+}
+
+.small-box-footer {
+  background: rgba(0, 0, 0, 0.1);
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.small-box-footer:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.bg-secondary {
+  background: linear-gradient(135deg, #6c757d, #5a6268); /* màu xám trung tính */
+  color: #fff;
+}
+
+
+.small-box-footer {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.small-box-footer:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

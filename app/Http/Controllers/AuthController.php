@@ -7,13 +7,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Wishlist;
 use App\Models\Province;
 use App\Models\Country;
 use App\Models\CustomerAddress;
+use App\Mail\ResetPasswordEmail;
 
 class AuthController extends Controller
 {
@@ -138,8 +141,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(),[
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required',
-            'country_id' => 'required',
+            // 'email' => 'required',
+            // 'country_id' => 'required',
             'address' => 'required',
             
             'province_id' => 'required',
@@ -160,9 +163,9 @@ class AuthController extends Controller
                     'user_id' => $userId,
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
-                    'email' => $request->email,
+                    // 'email' => $request->email,
                     'mobile' => $request->mobile,
-                    'country_id' => $request->country_id,
+                    // 'country_id' => $request->country_id,
                     'address' => $request->address,
                     'apartment' => $request->apartment,
                     
@@ -213,6 +216,11 @@ class AuthController extends Controller
 
         $orderItemsCount = OrderItem::where('order_id',$id)->count();
         $data['orderItemsCount'] = $orderItemsCount;
+
+        // if(!$order){
+        //     session()->flash('error', 'Đơn hàng không tồn tại');
+        //     return view('front.account.order');
+        // }
 
         return view('front.account.order-detail',$data);
     }
@@ -282,5 +290,85 @@ class AuthController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
+    }
+
+    public function forgotPassword(){
+        return view('front.account.forgot-password');
+    }
+    
+    public function processForgotPassword(Request $request){
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        if ($validator->fails()){
+            return redirect()->route('front.forgotPassword')->withInput()->withErrors($validator);
+        }
+        
+        $token = Str::random(60);
+
+        \DB::table('password_reset_tokens')->where('email',$request->email)->delete();
+
+        \DB::table('password_reset_tokens')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now()
+        ]);
+
+        //send email
+        $user = User::where('email', $request->email)->first();
+
+        $formData = [
+            'token' => $token,
+            'user' => $user,
+            'mailSubject' => 'Yêu cầu lấy lại mật khẩu'
+        ];
+
+        Mail::to($request->email)->send(new ResetPasswordEmail($formData));
+        
+        return redirect()->route('front.forgotPassword')->with('success','Quên mật khẩu thành công, vui lòng kiểm tra email của bạn');
+    }
+
+    public function resetPassword($token){
+        $tokenExist = \DB::table('password_reset_tokens')->where('token',$token)->first();
+
+        if ($tokenExist == null){
+            return redirect()->route('front.forgotPassword')->with('error','Yêu cầu thất bại');
+        }
+
+        return view('front.account.reset-password',[
+            'token' => $token
+        ]);
+    }
+
+    public function processResetPassword(Request $request){
+        $token = $request->token;
+
+        $tokenObject = \DB::table('password_reset_tokens')->where('token',$token)->first();
+
+        if ($tokenObject == null){
+            return redirect()->route('front.forgotPassword')->with('error','Yêu cầu thất bại');
+        }
+
+        $user = User::where('email',$tokenObject->email)->first();
+
+        $validator = Validator::make($request->all(),[
+            'new_password' => 'required|min:5',
+            'confirm_password' => 'required|same:new_password'
+        ]);
+
+        if ($validator->fails()){
+            return redirect()->route('front.resetPassword',$token)->withErrors($validator);
+        }
+
+        User::where('id',$user->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        \DB::table('password_reset_tokens')->where('email',$user->email)->delete();
+
+
+        return redirect()->route('account.login')->with('success','Cập nhật mật khẩu thành công');
+
     }
 }

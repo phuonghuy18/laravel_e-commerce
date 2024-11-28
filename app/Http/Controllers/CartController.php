@@ -161,7 +161,7 @@ class CartController extends Controller
 
         session()->forget('url.intended');
 
-        $countries = Country::orderBy('name','ASC')->get();
+        // $countries = Country::orderBy('name','ASC')->get();
 
         $provinces = Province::orderBy('name','ASC')->get();
 
@@ -190,7 +190,7 @@ class CartController extends Controller
                 $totalQty += $item->qty;
             }
     
-            //$totalShippingCharge = $shippingInfo->amount;
+           // $totalShippingCharge = $shippingInfo->amount;
             //$totalShippingCharge = $totalQty*$shippingInfo->amount;
             $grandTotal = ($subTotal-$discount)+$totalShippingCharge;
             
@@ -201,7 +201,7 @@ class CartController extends Controller
         
 
         return view('front.checkout',[
-            'countries' => $countries,
+            // 'countries' => $countries,
             'provinces' => $provinces,
             'customerAddress' => $customerAddress,
             'totalShippingCharge' => $totalShippingCharge,
@@ -215,9 +215,9 @@ class CartController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required',
-            'country' => 'required',
+            // 'country' => 'required',
             'address' => 'required',
-            'city' => 'required',
+            
             'province' => 'required',
             
             'mobile' => 'required'
@@ -244,10 +244,10 @@ class CartController extends Controller
                 'last_name' => $request->last_name,
                 'email' => $request->email,
                 'mobile' => $request->mobile,
-                'country_id' => $request->country,
+                // 'country_id' => $request->country,
                 'address' => $request->address,
                 'apartment' => $request->apartment,
-                'city' => $request->city,
+                // 'city' => $request->city,
                 'province_id' => $request->province
                 
             ]
@@ -317,7 +317,7 @@ class CartController extends Controller
             $order->address = $request->address;
             $order->apartment = $request->apartment;
             
-            $order->city = $request->city;
+            // $order->city = $request->city;
             //$order->zip = $request->zip;
             $order->notes = $request->order_notes;
             $order->country_id = $request->country;
@@ -344,7 +344,6 @@ class CartController extends Controller
                     $productData->qty = $updatedQty;
                     $productData->save();
                 }
-                
             }
 
 
@@ -433,10 +432,10 @@ class CartController extends Controller
             $order->address = $request->address;
             $order->apartment = $request->apartment;
             
-            $order->city = $request->city;
+            // $order->city = $request->city;
             //$order->zip = $request->zip;
             $order->notes = $request->order_notes;
-            $order->country_id = $request->country;
+            // $order->country_id = $request->country;
             $order->province_id = $request->province;
 
             $order->save();
@@ -521,8 +520,8 @@ class CartController extends Controller
         $accessKey = 'klm05TvNBzhg7h7j';
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
         $orderInfo = "Thanh toán qua MoMo";
-        $amount = $order->grand_total*23000;
-        $orderId = $order->id;
+        $amount = $order->grand_total;
+        $orderId = $orderId = $order->id . '_' . time();
         $redirectUrl = "http://127.0.0.1:8000/thanks/".$orderId;
         $ipnUrl = "http://127.0.0.1:8000/ticketPaid/".$orderId;
         $extraData = "";
@@ -549,8 +548,9 @@ class CartController extends Controller
             'signature' => $signature);
         $result = execPostRequest($endpoint, json_encode($data));
         $jsonResult = json_decode($result, true);  // decode json
-        // dd($jsonResult);
+        //   dd($jsonResult);
         //Just a example, please check more in there
+        
         return redirect($jsonResult['payUrl']);
     }
 
@@ -604,10 +604,10 @@ class CartController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'grandTotal' => number_format($grandTotal,2),
-                    'discount' => number_format($discount,2),
+                    'grandTotal' => number_format($grandTotal),
+                    'discount' => number_format($discount),
                     'discountString' => $discountString,
-                    'shippingCharge' => number_format($shippingCharge,2)
+                    'shippingCharge' => number_format($shippingCharge)
                 ]); 
 
         } else {
@@ -618,20 +618,20 @@ class CartController extends Controller
 
             return response()->json([
                 'status' => true,
-                'grandTotal' => number_format($grandTotal,2),
-                'discount' => number_format($discount,2),
+                'grandTotal' => number_format($grandTotal),
+                'discount' => number_format($discount),
                 'discountString' => $discountString,
-                'shippingCharge' => number_format($shippingCharge,2)
+                'shippingCharge' => number_format($shippingCharge)
             ]);
         }
     } else {
 
         return response()->json([
             'status' => true,
-            'grandTotal' => number_format($subTotal-$discount,2),
-            'discount' => number_format($discount,2),
+            'grandTotal' => number_format($subTotal-$discount),
+            'discount' => number_format($discount),
             'discountString' => $discountString,
-            'shippingCharge' => number_format(0,2)
+            'shippingCharge' => number_format(0)
         ]);
         }
     }

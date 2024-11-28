@@ -55,23 +55,25 @@
 		<div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
 			<div class="col-lg-4 logo">
 				<a href="{{ route('front.home') }}" class="text-decoration-none">
-					<span class="h1 text-uppercase text-primary bg-dark px-2">Online</span>
-					<span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">SHOP</span>
+					<span class="h1 text-uppercase text-primary bg-dark px-2">Dáng hương</span>
+					
 				</a>
 			</div>
 			<div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
 				<form action="{{ route('front.shop') }}" method="get">					
 					<div class="input-group">
-						<input value="{{ Request::get('search') }}" type="text" placeholder="Search For Products" class="form-control" name="search" id="search">
+						<input value="{{ Request::get('search') }}" type="text" placeholder="Tìm kiếm sản phẩm" class="form-control" name="search" id="search">
 						<button type="submit" class="input-group-text">
 							<i class="fa fa-search"></i>
 					  	</button>
 					</div>
 				</form>
 				@if (Auth::check())
-				<a href="{{ route('account.profile') }}" class="nav-link text-dark">Tài khoản</a>
+				<a href="{{ route('account.profile') }}" class="nav-link text-dark"> <i class="fas fa-user" style="margin-right: 5px;"></i>Tài khoản</a>
+				
 				@else
-				<a href="{{ route('account.login') }}" class="nav-link text-dark">Đăng nhập</a>
+				<a href="{{ route('account.login') }}" class="nav-link text-dark">  <i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Đăng nhập</a>
+				
 				@endif
 			</div>		
 		</div>
@@ -95,27 +97,34 @@
           				<a class="nav-link active" aria-current="page" href="index.php" title="Products">Home</a>
         			</li> -->
                     @if (getCategories()->isNotEmpty())
-                        @foreach ( getCategories() as $category)
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="{{ route('front.shop',[$category->slug,null]) }}" data-bs-toggle="dropdown" aria-expanded="false">
-								{{ $category->name }}
-							</a>
-                            @if ($category->sub_category->isNotEmpty())
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                @foreach ($category->sub_category as $subCategory)
-                                    <li>
-										<a class="dropdown-item nav-link" href="{{ route('front.shop',[$category->slug,$subCategory->slug]) }}">{{ $subCategory->name }}
-										</a>
-									</li>
-                                @endforeach
-                            </ul>
-                            @endif
-                            
-                            
-                        </li>
-                        @endforeach
-					
-                    @endif
+    				@foreach (getCategories() as $category)
+    					<li style="display: flex; align-items: center;" class="nav-item dropdown">
+        				<!-- Thẻ a điều hướng đến trang category -->
+        					<a href="{{ route('front.shop', [$category->slug, null]) }}" class="nav-link">
+            						{{ $category->name }}
+        					</a>
+
+        				<!-- Nút để mở dropdown cho các subcategories -->
+        				@if ($category->sub_category->isNotEmpty())
+        				<button style="padding-left: 4px;padding-right:4px;" type="button" class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+							
+		  				</button>
+
+        				<!-- Dropdown cho các subcategories -->
+        				<ul class="dropdown-menu dropdown-menu-dark">
+            				@foreach ($category->sub_category as $subCategory)
+                			<li>
+                    			<a style="display: inline-block" class="dropdown-item nav-link" href="{{ route('front.shop', [$category->slug, $subCategory->slug]) }}">
+                        			{{ $subCategory->name }}
+                    			</a>
+                			</li>
+            				@endforeach
+        				</ul>
+        				@endif
+    				</li>
+    			@endforeach
+				@endif
+
 					
 					
 					
@@ -144,17 +153,17 @@
 		<div class="row">
 			<div class="col-md-4">
 				<div class="footer-card">
-					<h3>Get In Touch</h3>
-					<p>No dolore ipsum accusam no lorem. <br>
-					123 Street, New York, USA <br>
-					exampl@example.com <br>
-					000 000 0000</p>
+					<h3>Liên hệ</h3>
+					<p>10-10B Cách Mạng Tháng 8, <br>
+					 Phường Bến Thành, Quận 1, TP HCM
+					danghuong@gmail.com <br>
+					1900 0000</p>
 				</div>
 			</div>
 
 			<div class="col-md-4">
 				<div class="footer-card">
-					<h3>Important Links</h3>
+					<h3>Thông tin</h3>
 					<ul>
 						@if (staticPages()->isNotEmpty())
 							@foreach (staticPages() as $page)
@@ -173,11 +182,10 @@
 
 			<div class="col-md-4">
 				<div class="footer-card">
-					<h3>My Account</h3>
+					<h3>Tài khoản</h3>
 					<ul>
-						<li><a href="#" title="Sell">Login</a></li>
-						<li><a href="#" title="Advertise">Register</a></li>
-						<li><a href="#" title="Contact Us">My Orders</a></li>						
+						<li><a href="{{ route('account.login') }}" title="Sell">Đăng nhập</a></li>
+						<li><a href="{{ route('account.register') }}" title="Advertise">Đăng ký</a></li>					
 					</ul>
 				</div>
 			</div>			
@@ -188,7 +196,7 @@
 			<div class="row">
 				<div class="col-12 mt-3">
 					<div class="copy-right text-center">
-						<p>© Copyright  SHOP. All Rights Reserved</p>
+						<p>© Copyright  DÁNG HƯƠNG. All Rights Reserved</p>
 					</div>
 				</div>
 			</div>

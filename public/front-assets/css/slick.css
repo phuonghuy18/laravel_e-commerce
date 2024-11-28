@@ -117,3 +117,157 @@
 .slick-arrow.slick-hidden {
     display: none;
 }
+
+.rating {
+	direction: rtl;
+	unicode-bidi: bidi-override;
+	color: #ddd; /* Personal choice */
+    font-size: 8px;
+    margin-left: -15px;
+}
+.rating input {
+	display: none;
+}
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked + label,
+.rating input:checked + label ~ label {
+	color: #ffc107; /* Personal color choice. Lifted from Bootstrap 4 */
+    font-size: 8px;
+}
+
+
+.front-stars, .back-stars, .star-rating {
+    display: flex;
+  }
+  
+  .star-rating {
+    align-items: left;
+    font-size: 1.5em;
+    justify-content: left;
+    margin-left: -5px;
+  }
+  
+  .back-stars {
+    color: #CCC;
+    position: relative;
+  }
+  
+  .front-stars {
+    color: #FFBC0B;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    transition: all 0.5s;
+  }
+
+  
+  .percent {
+    color: #bb5252;
+    font-size: 1.5em;
+  }
+
+  .star-rating.product {
+    font-size: 1em;
+  }
+
+  .h6.link {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Hiển thị tối đa 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 38px; /* Đặt chiều cao phù hợp để các ô đều nhau */
+}
+
+
+.order-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 20px 0;
+}
+
+.step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+/* Biểu tượng */
+.step .icon {
+    width: 50px;
+    height: 50px;
+    background: #f1f1f1;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: #777;
+    font-size: 20px;
+    z-index: 2;
+    position: relative;
+}
+
+/* Khi biểu tượng được kích hoạt */
+.step.active .icon {
+    border-color: #28a745; /* Viền xanh lá */
+    background: #28a745; /* Nền xanh lá */
+    color: #fff; /* Màu biểu tượng trắng */
+}
+
+/* Đường nối */
+.step::before,
+.step::after {
+    content: '';
+    position: absolute;
+    top: 50%; /* Đặt đường line giữa biểu tượng */
+    height: 2px;
+    background: #ddd; /* Màu mặc định là xám */
+    z-index: 1; /* Đường line nằm dưới biểu tượng */
+    transform: translateY(-50%);
+    width: 50%;
+}
+
+/* Đường nối trước biểu tượng */
+.step::before {
+    left: 0;
+}
+
+/* Đường nối sau biểu tượng */
+.step::after {
+    right: 0;
+}
+
+/* Ẩn đường line không cần thiết */
+.step:first-child::before {
+    display: none;
+}
+.step:last-child::after {
+    display: none;
+}
+
+/* Khi trạng thái là "Đã Giao Cho ĐVVC" */
+.step.shipping-active::after {
+    background: #28a745; /* Đường line sau của biểu tượng 1 */
+}
+.step.shipping-active + .step::before {
+    background: #28a745; /* Đường line trước của biểu tượng 2 */
+}
+
+/* Khi trạng thái là "Đã Nhận Được Hàng" */
+.step.delivered-active::after {
+    background: #28a745; /* Đường line sau của biểu tượng 1 */
+}
+.step.delivered-active + .step::before {
+    background: #28a745; /* Đường line trước của biểu tượng 2 */
+}
+.step.delivered-active + .step::after {
+    background: #28a745; /* Đường line sau của biểu tượng 2 */
+}
+.step.delivered-active + .step + .step::before {
+    background: #28a745; /* Đường line trước của biểu tượng 3 */
+}

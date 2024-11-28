@@ -56,15 +56,15 @@
 		<div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
 			<div class="col-lg-4 logo">
 				<a href="{{ route('front.home') }}" class="text-decoration-none">
-					<span class="h1 text-uppercase text-primary bg-dark px-2">Online</span>
-					<span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">SHOP</span>
+					<span class="h1 text-uppercase text-primary bg-dark px-2">Dáng hương</span>
+					
 				</a>
 			</div>
 			<div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
 				@if (Auth::check())
-				<a href="{{ route('account.profile') }}" class="nav-link text-dark">Tài khoản</a>
+				<a href="{{ route('account.profile') }}" class="nav-link text-dark"><i class="fas fa-user" style="margin-right: 5px;"></i>Tài khoản</a>
 				@else
-				<a href="{{ route('account.login') }}" class="nav-link text-dark">Đăng nhập</a>
+				<a href="{{ route('account.login') }}" class="nav-link text-dark"><i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Đăng nhập</a>
 				@endif
 				
 				
@@ -90,34 +90,50 @@
           				<a class="nav-link active" aria-current="page" href="index.php" title="Products">Home</a>
         			</li> -->
                     @if (getCategories()->isNotEmpty())
-                        @foreach ( getCategories() as $category)
-                        <li class="nav-item dropdown">
-                            <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ $category->name }}
-                            </button>
-                            @if ($category->sub_category->isNotEmpty())
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                @foreach ($category->sub_category as $subCategory)
-                                    <li><a class="dropdown-item nav-link" href="{{ route('front.shop',[$category->slug,$subCategory->slug]) }}">{{ $subCategory->name }}</a></li>
-                                @endforeach
-                            </ul>
-                            @endif
-                            
-                            
-                        </li>
-                        @endforeach
+    				@foreach (getCategories() as $category)
+    					<li style="display: flex; align-items: center;" class="nav-item dropdown">
+        				<!-- Thẻ a điều hướng đến trang category -->
+        					<a href="{{ route('front.shop', [$category->slug, null]) }}" class="nav-link">
+            						{{ $category->name }}
+        					</a>
+
+        				<!-- Nút để mở dropdown cho các subcategories -->
+        				@if ($category->sub_category->isNotEmpty())
+        				<button style="padding-left: 4px;padding-right:4px;" type="button" class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+							
+		  				</button>
+
+        				<!-- Dropdown cho các subcategories -->
+        				<ul class="dropdown-menu dropdown-menu-dark">
+            				@foreach ($category->sub_category as $subCategory)
+                			<li>
+                    			<a style="display: inline-block" class="dropdown-item nav-link" href="{{ route('front.shop', [$category->slug, $subCategory->slug]) }}">
+                        			{{ $subCategory->name }}
+                    			</a>
+                			</li>
+            				@endforeach
+        				</ul>
+        				@endif
+    				</li>
+    			@endforeach
+				@endif
+
+
 					
-                    @endif
 					
 					
 					
       			</ul>      			
       		</div>   
-			<div class="right-nav py-0">
+			  <div class="right-nav py-0">
 				<a href="{{ route('front.cart') }}" class="ml-3 d-flex pt-2">
-					<i class="fas fa-shopping-cart text-primary"></i>					
+					<i class="fas fa-shopping-cart text-primary fa-lg">
+						<span class="badge" style="position:absolute;top:-8px;right:-15px;border-radius:60%;padding: 3px 8px; border: 1px solid #fff;background-color: #F7CA0D;">
+							{{ Cart::count() }}
+							</span></i>	
+										
 				</a>
-			</div> 		
+			</div>	
       	</nav>
   	</div>
 </header>
@@ -132,17 +148,17 @@
 		<div class="row">
 			<div class="col-md-4">
 				<div class="footer-card">
-					<h3>Get In Touch</h3>
+					<h3>Liên hệ</h3>
 					<p>No dolore ipsum accusam no lorem. <br>
 					123 Street, New York, USA <br>
-					exampl@example.com <br>
-					000 000 0000</p>
+					danghuong@gmail.com <br>
+					1900 0000</p>
 				</div>
 			</div>
 
 			<div class="col-md-4">
 				<div class="footer-card">
-					<h3>Important Links</h3>
+					<h3>Thông tin</h3>
 					<ul>
 						@if (staticPages()->isNotEmpty())
 							@foreach (staticPages() as $page)
@@ -171,7 +187,7 @@
 			<div class="row">
 				<div class="col-12 mt-3">
 					<div class="copy-right text-center">
-						<p>© Copyright  SHOP. All Rights Reserved</p>
+						<p>© Copyright  DÁNG HƯƠNG. All Rights Reserved</p>
 					</div>
 				</div>
 			</div>

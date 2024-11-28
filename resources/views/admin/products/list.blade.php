@@ -51,7 +51,7 @@
                                 <th>Product</th>
                                 <th>Price</th>
                                 <th>Qty</th>
-                                <th>SKU</th>
+                                
                                 <th width="100">Status</th>
                                 <th width="100">Action</th>
                             </tr>
@@ -74,7 +74,7 @@
                                     
                                     </td>
                                     <td><a href="#">{{ $product->title }}</a></td>
-                                    <td>${{ $product->price }}</td>
+                                    <td>{{ number_format($product->price) }}</td>
                                     <td>{{ $product->qty }} left in Stock
                                         <a href="{{ route('products.import', $product->id) }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
@@ -82,7 +82,7 @@
                                               </svg>
                                         </a>
                                     </td>
-                                    <td>{{ $product->sku }}</td>											
+                                    										
                                     <td>
                                         @if ($product->status == 1)
                                         <svg class="text-success-500 h-6 w-6 text-success" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">

@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@if (Auth::user()->role == 2)
+@if (Auth::user()->role == 2 || Auth::user()->role == 4)
 <!-- Content Header (Page header) -->
 <section class="content-header">					
     <div class="container-fluid my-2">
@@ -10,7 +10,7 @@
                 <h1>Create Page</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('categories.index') }}" class="btn btn-primary">Back</a>
+                <a href="{{ route('pages.index') }}" class="btn btn-primary">Back</a>
             </div>
         </div>
     </div>

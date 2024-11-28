@@ -12,10 +12,12 @@ use App\Models\ProductImage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Image;
 use App\Models\TempImage;
+use App\Models\ProductRating;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
+    
     public function index(Request $request){
         $products = Product::latest('id')->with('product_images');
         if ($request->get('keyword') !=""){
@@ -24,8 +26,10 @@ class ProductController extends Controller
         $products = $products->paginate();
         $data['products'] = $products;
         //dd($products);
+        
         return view('admin.products.list',$data);
     }
+
 
 
     public function create(){
@@ -44,7 +48,7 @@ class ProductController extends Controller
             'title' => 'required',
             'slug' => 'required|unique:products',
             'price' => 'required|numeric',
-            'sku' => 'required|unique:products',
+            
             'track_qty' => 'required|in:Yes,No',
             'category' => 'required|numeric',
             'is_featured' => 'required|in:Yes,No',
@@ -64,8 +68,8 @@ class ProductController extends Controller
             $product-> description = $request->description;
             $product-> price = $request->price;
             $product-> compare_price = $request->compare_price;
-            $product-> sku = $request->sku;
-            $product-> barcode = $request->barcode;
+            
+            
             $product-> track_qty = $request->track_qty;
             $product-> qty = $request->qty;
             $product-> status = $request->status;
@@ -73,7 +77,7 @@ class ProductController extends Controller
             $product-> sub_category_id = $request->sub_category;
             $product-> brand_id = $request->brand;
             $product-> is_featured = $request->is_featured;
-            $product-> shipping_returns = $request->shipping_returns;
+            
             $product-> short_description = $request->short_description;
             $product-> related_products = (!empty($request->related_products)) ? implode(',',$request->related_products) : '';
             $product->save();
@@ -165,7 +169,7 @@ class ProductController extends Controller
             'title' => 'required',
             'slug' => 'required|unique:products,slug,'.$product->id.',id',
             'price' => 'required|numeric',
-            'sku' => 'required|unique:products,sku,'.$product->id.',id',
+            
             'track_qty' => 'required|in:Yes,No',
             'category' => 'required|numeric',
             'is_featured' => 'required|in:Yes,No',
@@ -184,8 +188,8 @@ class ProductController extends Controller
             $product-> description = $request->description;
             $product-> price = $request->price;
             $product-> compare_price = $request->compare_price;
-            $product-> sku = $request->sku;
-            $product-> barcode = $request->barcode;
+            
+            
             $product-> track_qty = $request->track_qty;
             $product-> qty = $request->qty;
             $product-> status = $request->status;
@@ -193,7 +197,7 @@ class ProductController extends Controller
             $product-> sub_category_id = $request->sub_category;
             $product-> brand_id = $request->brand;
             $product-> is_featured = $request->is_featured;
-            $product-> shipping_returns = $request->shipping_returns;
+            
             $product-> short_description = $request->short_description;
             $product-> related_products = (!empty($request->related_products)) ? implode(',',$request->related_products) : '';
             $product->save();
@@ -268,5 +272,29 @@ class ProductController extends Controller
             ]);
     }
 
-    
+    public function productRatings(Request $request){
+        $ratings = ProductRating::select('product_rating.*','products.title as productTitle')
+                            ->orderBy('product_rating.created_at','DESC');
+        $ratings = $ratings->leftJoin('products','products.id','product_rating.product_id');
+        if ($request->get('keyword') !=""){
+            $ratings = $ratings->orWhere('products.title','like','%'.$request->keyword.'%');
+            $ratings = $ratings->orWhere('product_rating.username','like','%'.$request->keyword.'%');
+        }
+        $ratings = $ratings->paginate(10);
+        return view('admin.products.ratings',[
+            'ratings' => $ratings
+        ]);
+    }
+
+    public function changRatingStatus(Request $request){
+        $productRating = ProductRating::find($request->id);
+        $productRating->status = $request->status;
+        $productRating -> save();
+        session()->flash('success', 'Đổi trạng thái thành công');
+        return response()->json([
+            'status' => true
+        ]);
+    }
+
+
 }

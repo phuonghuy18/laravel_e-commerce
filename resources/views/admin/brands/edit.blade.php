@@ -81,7 +81,7 @@
                 $("button[type=submit]").prop('disabled',false);
                 if(response["status"] == true){
 
-                   /*  window.location.href="{{ Route('categories.index') }}";
+                    window.location.href="{{ Route('brands.index') }}";
 
                     $("#name").removeClass('is-invalid')
                     .siblings('p')
@@ -90,7 +90,7 @@
                     $("#slug").removeClass('is-invalid')
                     .siblings('p')
                     .removeClass('invalid-feedback').html("");
- */
+
                 }else {
                     if (response['notFound'] == true){
                         window.location.href="{{ Route('brands.index') }}";

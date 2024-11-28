@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@if (Auth::user()->role == 2)
+@if (Auth::user()->role == 2 || Auth::user()->role == 4)
 <section class="content-header">					
     <div class="container-fluid my-2">
         <div class="row mb-2">

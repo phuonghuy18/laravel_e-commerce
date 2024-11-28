@@ -1,12 +1,12 @@
-@extends('front.layouts.app')
+@extends('front.layouts.appwithoutsearch')
 
 @section('content')
 <section class="section-5 pt-3 pb-3 mb-3 bg-white">
     <div class="container">
         <div class="light-font">
             <ol class="breadcrumb primary-color mb-0">
-                <li class="breadcrumb-item"><a class="white-text" href="{{ route('account.profile') }}">Tài khoản</a></li>
-                <li class="breadcrumb-item">Đổi mật khẩu</li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('account.profile') }}">TÀI KHOẢN</a></li>
+                <li class="breadcrumb-item">ĐỔI MẬT KHẨU</li>
             </ol>
         </div>
     </div>
@@ -23,28 +23,28 @@
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="h5 mb-0 pt-2 pb-2">Change Password</h2>
+                        <h2 class="h5 mb-0 pt-2 pb-2">Đổi mật khẩu</h2>
                     </div>
                     <form action="" method="post" id="changePasswordForm">
                     <div class="card-body p-4">
                         <div class="row">
                             <div class="mb-3">               
-                                <label for="name">Old Password</label>
-                                <input type="password" name="old_password" id="old_password" placeholder="Old Password" class="form-control">
+                                <label for="name">Mật khẩu cũ</label>
+                                <input type="password" name="old_password" id="old_password"  class="form-control">
                                 <p></p>
                             </div>
                             <div class="mb-3">               
-                                <label for="name">New Password</label>
-                                <input type="password" name="new_password" id="new_password" placeholder="New Password" class="form-control">
+                                <label for="name">Mật khẩu mới</label>
+                                <input type="password" name="new_password" id="new_password" placeholder="Mật khẩu có độ dài tối thiểu 5 ký tự" class="form-control">
                                 <p></p>
                             </div>
                             <div class="mb-3">               
-                                <label for="name">Confirm Password</label>
-                                <input type="password" name="new_password_confirmation" id="new_password_confirmation" placeholder="Confirm Password" class="form-control">
+                                <label for="name">Xác nhận mật khẩu mới</label>
+                                <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control">
                                 <p></p>
                             </div>
                             <div class="d-flex">
-                                <button id="submit" name="submit" type="submit" class="btn btn-dark">Save</button>
+                                <button id="submit" name="submit" type="submit" class="btn btn-dark">Lưu</button>
                             </div>
                         </div>
                     </div>

@@ -68,6 +68,7 @@
                             <select name="role" id="role" class="form-control">
                                 <option value="1">User</option>
                                 <option value="3">Shipper</option>
+                                <option value="4">Staff</option>
                             </select>
                             <p></p>
                         </div>

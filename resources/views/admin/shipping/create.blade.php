@@ -71,7 +71,7 @@
                             <tr>
                                 <td>{{ $shippingCharge->id }}</td>
                                 <td>{{ ($shippingCharge->province_id == 'other') ? 'Khác' :$shippingCharge->name }}</td>
-                                <td>{{ $shippingCharge->amount }}</td>
+                                <td>{{ number_format($shippingCharge->amount) }}đ</td>
                                 <td>
                                     <a href="{{ route('shipping.edit',$shippingCharge->id) }}" class="btn btn-primary">Edit</a>
                                     <a href="javacript:void(0);" onclick="deleteRecord({{ $shippingCharge->id }});" class="btn btn-danger">Delete</a>

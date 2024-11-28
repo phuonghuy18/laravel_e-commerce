@@ -6,8 +6,10 @@
             
             @if (Auth::user()->role == 2)
                 ADMIN
-            @else
+            @elseif (Auth::user()->role == 3)
                 SHIPPER
+            @else
+                STAFF
             @endif
         </span>
     </a>
@@ -52,6 +54,13 @@
                             <p>Products</p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('products-receipt.index') }}" class="nav-link">
+                            <i class="nav-icon fas fa-tag"></i>
+                            <p>Products Receipt</p>
+                        </a>
+                    </li>
                     
                     <li class="nav-item">
                         <a href="{{ route('shipping.create') }}" class="nav-link">
@@ -78,10 +87,34 @@
                             <p>Users</p>
                         </a>
                     </li>
+                    
                     <li class="nav-item">
-                        <a href="{{ route('import-product.index') }}" class="nav-link">
+                        <a href="{{ route('pages.index') }}" class="nav-link">
                             <i class="nav-icon  far fa-file-alt"></i>
-                            <p>Import Product</p>
+                            <p>Pages</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('products.productRatings') }}" class="nav-link">
+                            <i class="nav-icon  fas fa-comments"></i>
+                            <p> Ratings, Comments</p>
+                        </a>
+                    </li>
+                    @elseif (Auth::user()->role == 3)
+                    {{-- shipper --}}				
+                    <li class="nav-item">
+                        <a href="{{ route('orders.shipperIndex') }}" class="nav-link">
+                            <i class="nav-icon fas fa-shopping-bag"></i>
+                            <p>Orders</p>
+                        </a>
+                    </li>
+                    
+                    @elseif (Auth::user()->role == 4)
+                     {{-- staff --}}
+                    <li class="nav-item">
+                        <a href="{{ route('products.productRatings') }}" class="nav-link">
+                            <i class="nav-icon  fas fa-comments"></i>
+                            <p> Ratings, Comments</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -90,17 +123,12 @@
                             <p>Pages</p>
                         </a>
                     </li>
-                    @elseif (Auth::user()->role == 3)
-                    {{-- shipper --}}
-                    
-                    						
                     <li class="nav-item">
-                        <a href="{{ route('orders.shipperIndex') }}" class="nav-link">
-                            <i class="nav-icon fas fa-shopping-bag"></i>
-                            <p>Orders</p>
+                        <a href="{{ route('products-receipt.index') }}" class="nav-link">
+                            <i class="nav-icon fas fa-tag"></i>
+                            <p>Products Receipt</p>
                         </a>
                     </li>
-                    
                     @endif
                 							
             </ul>

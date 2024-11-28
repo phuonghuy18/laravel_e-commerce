@@ -21,7 +21,7 @@
     <address>
         <strong>{{ $mailData['order']->first_name.' '.$mailData['order']->last_name }}</strong><br>
         {{ $mailData['order']->address }}<br>
-        {{ $mailData['order']->city }}, {{ getCountryInfo($mailData['order']->country_id)->name }}<br>
+        {{-- {{ $mailData['order']->city }}, {{ getCountryInfo($mailData['order']->country_id)->name }}<br> --}}
         Số điện thoại: {{ $mailData['order']->mobile }}<br>
         Email: {{ $mailData['order']->email }}
     </address>
@@ -39,28 +39,28 @@
             @foreach ($mailData['order']->items as $item)
             <tr>
                 <td>{{ $item->name }}</td>
-                <td style="text-align: right">${{ number_format($item->price,3) }}</td>                                        
+                <td style="text-align: right">{{ number_format($item->price) }}</td>                                        
                 <td style="text-align: right">{{ $item->qty }}</td>
-                <td style="text-align: right">${{ number_format($item->total,3) }}</td>
+                <td style="text-align: right">{{ number_format($item->total) }}</td>
             </tr>
             @endforeach
             
             
             <tr>
                 <th colspan="3" style="text-align: left" >Tổng đơn:</th>
-                <td style="text-align: right">${{ number_format($mailData['order']->subtotal,3) }}</td>
+                <td style="text-align: right">{{ number_format($mailData['order']->subtotal) }}</td>
             </tr>
             <tr>
                 <th colspan="3" style="text-align: left">Khuyến mãi:{{ (!empty($mailData['order']->coupon_code)) ? '('.$mailData['order']->coupon_code.')' : '' }}</th>
-                <td style="text-align: right">${{ number_format($mailData['order']->discount,3) }}</td>
+                <td style="text-align: right">{{ number_format($mailData['order']->discount) }}</td>
             </tr>
             <tr>
                 <th colspan="3" style="text-align: left">Phí vận chuyển:</th>
-                <td style="text-align: right">${{ number_format($mailData['order']->shipping,3) }}</td>
+                <td style="text-align: right">{{ number_format($mailData['order']->shipping) }}</td>
             </tr>
             <tr>
                 <th colspan="3" style="text-align: left">Tổng cộng:</th>
-                <td style="text-align: right">${{ number_format($mailData['order']->grand_total,3) }}</td>
+                <td style="text-align: right">{{ number_format($mailData['order']->grand_total) }}</td>
             </tr>
         </tbody>
     </table>								

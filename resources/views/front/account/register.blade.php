@@ -1,12 +1,12 @@
-@extends('front.layouts.app')
+@extends('front.layouts.appwithoutsearch')
 
 @section('content')
 <section class="section-5 pt-3 pb-3 mb-3 bg-white">
     <div class="container">
         <div class="light-font">
             <ol class="breadcrumb primary-color mb-0">
-                <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
-                <li class="breadcrumb-item">Register</li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home') }}">TRANG CHỦ</a></li>
+                <li class="breadcrumb-item">ĐĂNG KÝ</li>
             </ol>
         </div>
     </div>
@@ -16,9 +16,10 @@
     <div class="container">
         <div class="login-form">    
             <form action="" method="post" name="registrationForm" id="registrationForm">
-                <h4 class="modal-title">Register Now</h4>
+                <h4 class="modal-title"><mark>ĐĂNG KÝ NGAY</mark></h4>
+                
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Name" id="name" name="name">
+                    <input type="text" class="form-control" placeholder="Tên" id="name" name="name">
                     <p></p>
                 </div>
                 <div class="form-group">
@@ -26,24 +27,21 @@
                     <p></p>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Phone" id="phone" name="phone">
+                    <input type="text" class="form-control" placeholder="Số điện thoại" id="phone" name="phone">
                     <p></p>
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" id="password" name="password">
+                    <input type="password" class="form-control" placeholder="Mật khẩu" id="password" name="password">
                     <p></p>
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Confirm Password" id="password_confirmation" name="password_confirmation">
+                    <input type="password" class="form-control" placeholder="Xác nhận mật khẩu" id="password_confirmation" name="password_confirmation">
                     <p></p>
                 </div>
-                <div class="form-group small">
-                    <a href="#" class="forgot-link">Forgot Password?</a>
-                    <p></p>
-                </div> 
-                <button type="submit" class="btn btn-dark btn-block btn-lg" value="Register">Register</button>
+                
+                <button type="submit" class="btn btn-dark btn-block btn-lg" value="Register">Đăng ký</button>
             </form>			
-            <div class="text-center small">Already have an account? <a href="{{ route('account.login') }}">Login Now</a></div>
+            <div class="text-center small">Bạn đã có tài khoản? <a href="{{ route('account.login') }}"><strong>Đăng nhập ngay</strong></a></div>
         </div>
     </div>
 </section>

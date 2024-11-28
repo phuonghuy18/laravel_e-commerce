@@ -68,7 +68,8 @@
                             <label for="slug">Role</label>
                             <select name="role" id="role" class="form-control">
                                 <option {{ ($user->role == 1) ? 'selected' : '' }} value="1">User</option>
-                                <option {{ ($user->role == 3) ? 'selected' : '' }} value="0">Shipper</option>
+                                <option {{ ($user->role == 3) ? 'selected' : '' }} value="3">Shipper</option>
+                                <option {{ ($user->role == 4) ? 'selected' : '' }} value="4">Staff</option>
                             </select>
                             <p></p>
                         </div>

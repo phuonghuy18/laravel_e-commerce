@@ -5,9 +5,9 @@
     <div class="container">
         <div class="light-font">
             <ol class="breadcrumb primary-color mb-0">
-                <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home') }}">Home</a></li>
-                <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.shop') }}">Shop</a></li>
-                <li class="breadcrumb-item">Cart</li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home') }}">TRANG CHỦ</a></li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.shop') }}">CỬA HÀNG</a></li>
+                <li class="breadcrumb-item">GIỎ HÀNG</li>
             </ol>
         </div>
     </div>
@@ -40,11 +40,11 @@
                     <table class="table" id="cart">
                         <thead>
                             <tr>
-                                <th>Item</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Remove</th>
+                                <th>Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng cộng</th>
+                                <th>Xóa</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,7 +62,7 @@
                                         <h2>{{ $item->name }}</h2>
                                     </div>
                                 </td>
-                                <td>${{ $item->price }}</td>
+                                <td>{{ number_format($item->price) }}</td>
                                 <td>
                                     <div class="input-group quantity mx-auto" style="width: 100px;">
                                         <div class="input-group-btn">
@@ -79,7 +79,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    ${{ $item->price*$item->qty }}
+                                    {{ number_format($item->price*$item->qty) }}
                                 </td>
                                 <td>
                                     <button class="btn btn-sm btn-danger" onclick="deleteItem('{{ $item->rowId }}');"><i class="fa fa-times"></i></button>
@@ -96,16 +96,16 @@
                     
                     <div class="card-body">
                         <div class="sub-title">
-                            <h2 class="bg-white">Cart Summery</h3>
+                            <h2 class="bg-white">Giỏ hàng</h3>
                         </div> 
                         <div class="d-flex justify-content-between pb-2">
-                            <div>Subtotal</div>
-                            <div>${{ Cart::subtotal() }}</div>
+                            <div>Thành tiền</div>
+                            <div>{{ Cart::subtotal() }}đ</div>
                         </div>
                         
                         
                         <div class="pt-2">
-                            <a href="{{ route('front.checkout') }}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+                            <a href="{{ route('front.checkout') }}" class="btn-dark btn btn-block w-100">Thanh toán</a>
                         </div>
                     </div>
                 </div>     
