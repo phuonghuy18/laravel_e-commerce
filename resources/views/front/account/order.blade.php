@@ -17,6 +17,7 @@
         <div class="row">
             <div class="col-md-3">
                 @include('front.account.common.sidebar')
+                @include(('front.account.common.message'))
             </div>
             <div class="col-md-9">
                 <div class="card">
@@ -57,7 +58,7 @@
                                             <td>{{ number_format($order->grand_total) }}đ</td>
                                         </tr>
                                         @endforeach
-                                        @else
+                                    @else
                                         <tr>
                                             <td colspan="3">Đơn hàng không có</td>
                                         </tr>

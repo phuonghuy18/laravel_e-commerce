@@ -206,23 +206,19 @@ class AuthController extends Controller
     }
 
     public function orderDetail($id){
-        $data = [];
-        $user = Auth::user();
-        $order = Order::where('user_id',$user->id)->where('id',$id)->first();
-        $data['order'] = $order;
+             $data = [];
+            $user = Auth::user();
 
-        $orderItems = OrderItem::where('order_id',$id)->get();
-        $data['orderItems'] = $orderItems;
-
-        $orderItemsCount = OrderItem::where('order_id',$id)->count();
-        $data['orderItemsCount'] = $orderItemsCount;
-
-        // if(!$order){
-        //     session()->flash('error', 'Đơn hàng không tồn tại');
-        //     return view('front.account.order');
-        // }
-
-        return view('front.account.order-detail',$data);
+            $order = Order::where('user_id',$user->id)->where('id',$id)->first();
+            $data['order'] = $order;     
+    
+            $orderItems = OrderItem::where('order_id',$id)->get();
+            $data['orderItems'] = $orderItems;
+    
+            $orderItemsCount = OrderItem::where('order_id',$id)->count();
+            $data['orderItemsCount'] = $orderItemsCount;
+    
+            return view('front.account.order-detail',$data);
     }
 
     public function wishlist(){

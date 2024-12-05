@@ -29,8 +29,7 @@
                             <h1 class="h5 mb-3">Shipping Address</h1>
                             <address>
                                 <strong>{{ $order->first_name.' '.$order->last_name }}</strong><br>
-                                {{ $order->address }}<br>
-                                {{ $order->city }}, {{ $order->countryName }}<br>
+                                {{ $order->address }}
                                 Phone: {{ $order->mobile }}<br>
                                 Email: {{ $order->email }}
                             </address>
@@ -42,7 +41,7 @@
                             <div class="col-sm-4 invoice-col">
                                 <br><br>
                                 <b>Order ID:</b> {{ $order->id }}<br>
-                                <b>Total:</b> ${{ number_format($order->grand_total,3) }}<br>
+                                <b>Total:</b> {{ number_format($order->grand_total) }}<br>
                                 <b>Status:</b> 
                                 @if ($order->status == 'pending')
                                     <span class="text-warning  ">Pending</span>
@@ -77,28 +76,28 @@
                                 @foreach ($orderItems as $item)
                                 <tr>
                                     <td>{{ $item->name }}</td>
-                                    <td>${{ number_format($item->price,3) }}</td>                                        
+                                    <td>{{ number_format($item->price) }}</td>                                        
                                     <td>{{ $item->qty }}</td>
-                                    <td>${{ number_format($item->total,3) }}</td>
+                                    <td>{{ number_format($item->total) }}</td>
                                 </tr>
                                 @endforeach
                                 
                                 
                                 <tr>
                                     <th colspan="3" class="text-right">Subtotal:</th>
-                                    <td>${{ number_format($order->subtotal,3) }}</td>
+                                    <td>{{ number_format($order->subtotal) }}</td>
                                 </tr>
                                 <tr>
                                     <th colspan="3" class="text-right">Discount:{{ (!empty($order->coupon_code)) ? '('.$order->coupon_code.')' : '' }}</th>
-                                    <td>${{ number_format($order->discount,3) }}</td>
+                                    <td>{{ number_format($order->discount) }}</td>
                                 </tr>
                                 <tr>
                                     <th colspan="3" class="text-right">Shipping:</th>
-                                    <td>${{ number_format($order->shipping,3) }}</td>
+                                    <td>{{ number_format($order->shipping) }}</td>
                                 </tr>
                                 <tr>
                                     <th colspan="3" class="text-right">Grand Total:</th>
-                                    <td>${{ number_format($order->grand_total,3) }}</td>
+                                    <td>{{ number_format($order->grand_total) }}</td>
                                 </tr>
                             </tbody>
                         </table>								

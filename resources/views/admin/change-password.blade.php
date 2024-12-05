@@ -9,7 +9,14 @@
                 <h1>Change Password</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('categories.index') }}" class="btn btn-primary">Back</a>
+                @if (Auth::user()->role == 2)
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-primary">Back</a>
+                @elseif (Auth::user()->role == 4)
+                <a href="{{ route('pages.index') }}" class="btn btn-primary">Back</a>
+                @else
+                <a href="{{ route('orders.shipperIndex') }}" class="btn btn-primary">Back</a>
+                @endif
+               
             </div>
         </div>
     </div>

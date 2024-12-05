@@ -45,13 +45,20 @@ class ProductReceiptController extends Controller
     {
         // Xác thực dữ liệu
         $validator = Validator::make($request->all(), [
-            'items.*.quantity' => 'required|integer',
+            'items.*.quantity' => 'required_if:items.*.checked,true|integer|min:1',  // Chỉ yêu cầu khi checked = true
+            'items.*.import_price' => 'required_if:items.*.checked,true|numeric|min:1',  // Kiểm tra nếu checked thì phải có import_price
         ]);
+
+        $messages = [
+            'items.*.quantity.required_if' => 'Vui lòng nhập số lượng cho các sản phẩm đã chọn.',
+            'items.*.quantity.integer' => 'Số lượng phải là một số nguyên.',
+            'items.*.quantity.min' => 'Số lượng phải lớn hơn 0.',
+        ];
     
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
-                'errors' => $validator->errors(),
+                'errors' => $validator->errors()->messages(),
             ], 422);
         }
     

@@ -72,10 +72,16 @@
                             </td>
                             <td>{{ $product->title }}</td>
                             <td><input readonly class="form-control" type="text" name="items[{{ $product->id }}][price]" value="{{ number_format($product->price) }}"></td>
-                            <td><input class="form-control" id="checked_{{ $product->id }}" name="items[{{ $product->id }}][checked]" type="checkbox"></td>
+                            <td>
+                                <input type="checkbox" name="items[{{ $product->id }}][checked]" class="product-checkbox" />
+                            </td>
 
-                            <td><input class="form-control" id="qty_{{ $product->id }}" name="items[{{ $product->id }}][quantity]" type="number" value="0"></td>
-                            <td><input class="form-control" id="import_price_{{ $product->id }}" name="items[{{ $product->id }}][import_price]" type="number"></td>
+                            <td>
+                                <input type="number" name="items[{{ $product->id }}][quantity]" class="quantity-input" min="1" disabled />
+                            </td>
+                            <td>
+                                <input type="number" name="items[{{ $product->id }}][import_price]" class="price-input" min="1" disabled>
+                            </td>
                             <input type="hidden" name="items[{{ $product->id }}][title]" value="{{ $product->title }}">         
                         </tr>
                         
@@ -110,41 +116,96 @@
 
 @section('customJs')
 <script>
-    $("#productReceiptForm").submit(function(event) {
-        event.preventDefault();
-        var element = $(this);
-        $("button[type=submit]").prop('disabled', true);
+    
 
-        $.ajax({
-            url: '{{ route("products-receipt.store") }}',
-            type: 'post',
-            data: element.serializeArray(),
-            dataType: 'json',
-            success: function(response) {
-                $("button[type=submit]").prop('disabled', false);
-                if (response.status == true) {
-                    // Hiển thị thông báo thành công và chuyển hướng
-                    alert(response.message);
-                    window.location.href = "{{ route('products-receipt.index') }}";
-                } else {
-                    // Hiển thị thông báo lỗi nếu có
-                    alert("Lỗi khi thêm sản phẩm.");
-                }
-            },
-            error: function(jqXHR) {
-                $("button[type=submit]").prop('disabled', false);
-                if (jqXHR.status === 422) {
-                    let errors = jqXHR.responseJSON.errors;
-                    let errorMessages = '';
-                    $.each(errors, function(key, messages) {
-                        errorMessages += messages.join(', ') + '\n';
-                    });
-                    alert("Lỗi xác thực:\n" + errorMessages);
-                } else {
-                    console.log("Lỗi không xác định xảy ra");
-                }
+    $("#productReceiptForm").submit(function(event) {
+    event.preventDefault();
+    var element = $(this);
+    $("button[type=submit]").prop('disabled', true);
+
+    var errorMessages = '';
+
+    // Lặp qua tất cả các dòng sản phẩm để kiểm tra số lượng và giá
+    $('.product-checkbox').each(function() {
+        var row = $(this).closest('tr');
+        var quantity = row.find('.quantity-input').val();
+        var price = row.find('.price-input').val(); // Kiểm tra giá nhập
+        var isChecked = $(this).prop('checked');
+
+        if (isChecked) {
+            // Kiểm tra số lượng
+            if (!quantity || quantity <= 0) {
+                errorMessages += 'Vui lòng nhập số lượng cho sản phẩm: ' + row.find('td').eq(1).text() + '\n';
             }
-        });
+            // Kiểm tra giá nhập
+            if (!price || price <= 0) {
+                errorMessages += 'Vui lòng nhập giá cho sản phẩm: ' + row.find('td').eq(1).text();
+            }
+        }
     });
+
+    if (errorMessages) {
+        $("button[type=submit]").prop('disabled', false);
+        alert("Lỗi:\n" + errorMessages);
+        return; // Dừng submit form nếu có lỗi
+    }
+
+    // Gửi AJAX nếu không có lỗi
+    $.ajax({
+        url: '{{ route("products-receipt.store") }}',
+        type: 'post',
+        data: element.serializeArray(),
+        dataType: 'json',
+        success: function(response) {
+            $("button[type=submit]").prop('disabled', false);
+            if (response.status == true) {
+                // Hiển thị thông báo thành công và chuyển hướng
+                
+                window.location.href = "{{ route('products-receipt.index') }}";
+            } else {
+                // Hiển thị thông báo lỗi nếu có
+                alert("Lỗi khi thêm sản phẩm.");
+            }
+        },
+        error: function(jqXHR) {
+            $("button[type=submit]").prop('disabled', false);
+            if (jqXHR.status === 422) {
+                let errors = jqXHR.responseJSON.errors;
+                let errorMessages = '';
+
+                // Lặp qua các lỗi và hiển thị thông báo lỗi tùy chỉnh
+                $.each(errors, function(key, messages) {
+                    if (key.includes('quantity')) {
+                        // Nếu lỗi liên quan đến trường quantity
+                        errorMessages += "Vui lòng nhập số lượng cho các sản phẩm đã chọn.";
+                    } else {
+                        errorMessages += messages.join(' ') + '\n';
+                    }
+                });
+
+                // Hiển thị lỗi tùy chỉnh
+                alert("Lỗi:\n" + errorMessages);
+            } else {
+                console.log("Lỗi không xác định xảy ra");
+            }
+        }
+    });
+});
+
+document.querySelectorAll('.product-checkbox').forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+        let row = this.closest('tr');
+        let quantityInput = row.querySelector('.quantity-input');
+        let priceInput = row.querySelector('.price-input');
+        
+        if (this.checked) {
+            quantityInput.disabled = false; // Bật trường số lượng
+            priceInput.disabled = false; // Bật trường giá
+        } else {
+            quantityInput.disabled = true; // Tắt trường số lượng
+            priceInput.disabled = true; // Tắt trường giá
+        }
+    });
+});
 </script>
 @endsection
