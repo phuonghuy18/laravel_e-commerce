@@ -283,17 +283,6 @@
                                 .html('');
                         }
 
-                        if (errors.country){
-                            $("#country").addClass('is-invalid')
-                                .siblings("p")
-                                .addClass('invalid-feedback')
-                                .html(errors.country);
-                        } else {
-                            $("#country").removeClass('is-invalid')
-                                .siblings("p")
-                                .removeClass('invalid-feedback')
-                                .html('');
-                        }
 
                         if (errors.province){
                             $("#province").addClass('is-invalid')
@@ -366,8 +355,8 @@
                 dataType: 'json',
                 success: function(response){
                     if (response.status == true){
-                        $("#shippingAmount").html('$'+response.shippingCharge);
-                        $("#grandTotal").html('$'+response.grandTotal);
+                        $("#shippingAmount").html(response.shippingCharge+'đ');
+                        $("#grandTotal").html(response.grandTotal+'đ');
 
                     }
                 }
@@ -378,13 +367,13 @@
             $.ajax({
                 url: '{{ route("front.applyDiscount") }}',
                 type: 'post',
-                data: {code: $("#discount_code").val(), country_id: $("#country").val()},
+                data: {code: $("#discount_code").val(), province_id: $("#province").val()},
                 dataType: 'json',
                 success: function(response){
                     if (response.status == true){
-                        $("#shippingAmount").html('$'+response.shippingCharge);
-                        $("#grandTotal").html('$'+response.grandTotal);
-                        $("#discount_value").html('$'+response.discount);
+                        $("#shippingAmount").html(response.shippingCharge+'đ');
+                        $("#grandTotal").html(response.grandTotal+'đ');
+                        $("#discount_value").html(response.discount+'đ');
                         $("#discount-response-wrapper").html(response.discountString);
                     } else {
                         $("#discount-response-wrapper").html("<span class='text-danger'>"+response.message+"</span>");
@@ -402,9 +391,9 @@
                 dataType: 'json',
                 success: function(response){
                     if (response.status == true){
-                        $("#shippingAmount").html('$'+response.shippingCharge);
-                        $("#grandTotal").html('$'+response.grandTotal);
-                        $("#discount_value").html('$'+response.discount);
+                        $("#shippingAmount").html(response.shippingCharge+'đ');
+                        $("#grandTotal").html(+response.grandTotal+'đ');
+                        $("#discount_value").html(response.discount+'đ');
                         $("#discount-response").html('');
                         $("#discount_code").val('');
                     }

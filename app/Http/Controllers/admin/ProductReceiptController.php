@@ -43,6 +43,19 @@ class ProductReceiptController extends Controller
 
     public function store(Request $request)
     {
+        // Kiểm tra nếu không có sản phẩm nào được chọn
+        $items = $request->input('items', []);
+        $selectedProducts = array_filter($items, function ($item) {
+            return isset($item['checked']) && $item['checked'];
+        });
+
+        if (count($selectedProducts) === 0) {
+            return response()->json([
+                'status' => false,
+                'errors' => ['items' => ['Vui lòng chọn ít nhất một sản phẩm.']],
+            ], 422);
+        }
+
         // Xác thực dữ liệu
         $validator = Validator::make($request->all(), [
             'items.*.quantity' => 'required_if:items.*.checked,true|integer|min:1',  // Chỉ yêu cầu khi checked = true

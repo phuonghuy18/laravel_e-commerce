@@ -63,7 +63,7 @@
                                 <td>{{ $order->name }}</td>
                                 <td>{{  $order->email }}</td>
                                 <td>{{  $order->mobile }}</td>
-                                <td>{{ number_format($order->grand_total,3) }}</td>
+                                <td>{{ number_format($order->grand_total) }}</td>
                                 <td>
                                     @if ($order->payment_status == 'paid')
                                         Paid

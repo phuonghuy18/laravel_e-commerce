@@ -190,8 +190,6 @@ class CartController extends Controller
                 $totalQty += $item->qty;
             }
     
-           // $totalShippingCharge = $shippingInfo->amount;
-            //$totalShippingCharge = $totalQty*$shippingInfo->amount;
             $grandTotal = ($subTotal-$discount)+$totalShippingCharge;
             
         } else {
@@ -320,7 +318,7 @@ class CartController extends Controller
             // $order->city = $request->city;
             //$order->zip = $request->zip;
             $order->notes = $request->order_notes;
-            $order->country_id = $request->country;
+            // $order->country_id = $request->country;
             $order->province_id = $request->province;
 
             $order->save();
@@ -613,7 +611,7 @@ class CartController extends Controller
         } else {
             $shippingInfo = ShippingCharge::where('province_id','other')->first();
 
-            $shippingCharge =  $totalQty*$shippingInfo->amount;
+            $shippingCharge =  $shippingInfo->amount;
             $grandTotal = ($subTotal-$discount)+$shippingCharge;
 
             return response()->json([

@@ -102,7 +102,8 @@
                                 
         
         <div class="pb-5 pt-3">
-            <button type="submit" class="btn btn-primary">Create</button>
+            
+            <button  id="submitButton" type="submit" class="btn btn-primary">Create</button>
             <a href="{{ route('products.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
         </div>
     </div>
@@ -159,11 +160,9 @@
         success: function(response) {
             $("button[type=submit]").prop('disabled', false);
             if (response.status == true) {
-                // Hiển thị thông báo thành công và chuyển hướng
-                
+               
                 window.location.href = "{{ route('products-receipt.index') }}";
             } else {
-                // Hiển thị thông báo lỗi nếu có
                 alert("Lỗi khi thêm sản phẩm.");
             }
         },
@@ -207,5 +206,7 @@ document.querySelectorAll('.product-checkbox').forEach(function(checkbox) {
         }
     });
 });
+
+
 </script>
 @endsection
