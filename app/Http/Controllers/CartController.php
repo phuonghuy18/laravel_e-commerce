@@ -597,7 +597,7 @@ class CartController extends Controller
 
             if ($shippingInfo != null){
 
-                $shippingCharge = $totalQty*$shippingInfo->amount;
+                $shippingCharge = $shippingInfo->amount;
                 $grandTotal = ($subTotal-$discount)+$shippingCharge;
 
                 return response()->json([

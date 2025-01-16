@@ -89,7 +89,7 @@
                                             <p>Bạn đã hủy đơn hàng này</p>
                                         @elseif ($order->status == 'delivered')
                                            <p>Đã nhận hàng</p>
-                                        @else
+                                        @elseif ($order->status == 'pending')
                                         <button onclick="cancelOrder({{ $order->id }})" class="btn btn-danger btn-sm">Hủy đơn</button>
                                         @endif
                                         

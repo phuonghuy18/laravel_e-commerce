@@ -113,6 +113,10 @@ class HomeController extends Controller
         $ordersOfMonth = Order::whereDate('created_at', '>=', $startOfMonth)
             ->whereDate('created_at', '<=', $endOfMonth);
 
+            $totalRevenue = $ordersOfMonth->clone()
+                ->where('status', 'delivered')
+                ->sum('grand_total');
+
         // Tính doanh thu từ các đơn hàng đã giao nhưng chưa thanh toán
         $revenueCOD = $ordersOfMonth->clone()
             ->where('status', 'delivered')
@@ -177,6 +181,9 @@ public function getMonthlyReceipt(Request $request)
     $ordersOfMonth = Order::whereDate('created_at', '>=', $startOfMonth)
         ->whereDate('created_at', '<=', $endOfMonth);
 
+        $totalRevenueOfMonth = $ordersOfMonth->clone()
+        ->where('status', 'delivered')
+        ->sum('grand_total');
     // Doanh thu COD
     $revenueCODofMonth = $ordersOfMonth->clone()
         ->where('status', 'delivered')
